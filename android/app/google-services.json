@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "848327347701",
+    "firebase_url": "https://icu-call.firebaseio.com",
+    "project_id": "icu-call",
+    "storage_bucket": "icu-call.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848327347701:android:005cdbdcaa577ff68ba4bc",
+        "android_client_info": {
+          "package_name": "com.db.icu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848327347701-mk0kuh7q7gstms7l4htpglp4rlp6i75v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.db.icu",
+            "certificate_hash": "ab06fb2ee81a2a8400f32f81f0f04a65b4ffcd1f"
+          }
+        },
+        {
+          "client_id": "848327347701-pm1k6nif5hg0pvomqetqqkq4na0thhn5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2uWUHmpEBB0izcwKPvVG7LpUkbzoEBx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848327347701-pm1k6nif5hg0pvomqetqqkq4na0thhn5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
