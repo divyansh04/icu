@@ -297,21 +297,21 @@ class _ChatScreenState extends State<ChatScreen> {
                         subtitle: "Share contacts",
                         icon: Icons.contacts,
                       ),
-                      ModalTile(
-                        title: "Location",
-                        subtitle: "Share a location",
-                        icon: Icons.add_location,
-                      ),
+                      // ModalTile(
+                      //   title: "Location",
+                      //   subtitle: "Share a location",
+                      //   icon: Icons.add_location,
+                      // ),
                       ModalTile(
                         title: "Schedule Call",
-                        subtitle: "Arrange a skype call and get reminders",
+                        subtitle: "Arrange a call and get reminders",
                         icon: Icons.schedule,
                       ),
-                      ModalTile(
-                        title: "Create Poll",
-                        subtitle: "Share polls",
-                        icon: Icons.poll,
-                      )
+                      // ModalTile(
+                      //   title: "Create Poll",
+                      //   subtitle: "Share polls",
+                      //   icon: Icons.poll,
+                      // )
                     ],
                   ),
                 ),
