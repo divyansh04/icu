@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:icu/models/log.dart';
@@ -49,7 +48,7 @@ class HiveMethods implements LogInterface {
 
     List<Log> logList = [];
 
-    for (int i = 0; i < box.length; i++) {
+    for (int i = box.length-1; i >=0; i--) {
       var logMap = box.getAt(i);
 
       logList.add(Log.fromMap(logMap));
@@ -61,7 +60,7 @@ class HiveMethods implements LogInterface {
   deleteLogs(int logId) async {
     var box = await Hive.openBox(hiveBox);
 
-    await box.deleteAt(logId);
+    await box.deleteAt(box.length-logId-1);
     // await box.delete(logId);
   }
 
