@@ -6,6 +6,7 @@ import 'package:icu/enum/user_state.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/utils/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthMethods {
   static final Firestore _firestore = Firestore.instance;
@@ -53,8 +54,10 @@ class AuthMethods {
           idToken: _signInAuthentication.idToken);
 
       FirebaseUser user = await _auth.signInWithCredential(credential);
+      Fluttertoast.showToast(msg: 'Signed in Successfully',textColor: Colors.black,backgroundColor: Colors.white);
       return user;
     } catch (e) {
+      Fluttertoast.showToast(msg: 'Signed in Failed',textColor: Colors.black,backgroundColor: Colors.white);
       print("Auth methods error");
       print(e);
       return null;
