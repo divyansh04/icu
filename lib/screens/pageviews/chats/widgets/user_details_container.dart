@@ -72,17 +72,11 @@ class UserDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final User user = userProvider.getUser;
-    bool isEmptyImage(){
-      if(user.profilePhoto==null){
-        return true;
-      }
-      else return false;
-    }
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: Row(
         children: [
-          isEmptyImage()?CircleAvatar(backgroundImage: AssetImage('assets/profile.jpg'),radius: 25):CachedImage(
+          CachedImage(
             user.profilePhoto,
             isRound: true,
             radius: 50,

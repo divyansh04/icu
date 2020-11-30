@@ -116,20 +116,20 @@ class _LogInWidgetState extends State<LogInWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15, right: 8, bottom: 8),
-                          child: InkWell(
-                            onTap: () {},
-                            child: Text(
-                              'Forgot Password?',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                        //Padding(
+                        //                           padding: const EdgeInsets.only(
+                        //                               top: 15, right: 8, bottom: 8),
+                        //                           child: InkWell(
+                        //                             onTap: () {},
+                        //                             child: Text(
+                        //                               'Forgot Password?',
+                        //                               textAlign: TextAlign.right,
+                        //                               style: TextStyle(
+                        //                                 color: Colors.white,
+                        //                               ),
+                        //                             ),
+                        //                           ),
+                        //                         ),
                         SizedBox(
                           height: 18.0,
                         ),

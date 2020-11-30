@@ -122,7 +122,7 @@ class AuthMethods {
         uid: currentUser.uid,
         email: currentUser.email,
         name: name.toString(),
-        profilePhoto: null,
+        profilePhoto:'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4',
         username: username);
 
     firestore
