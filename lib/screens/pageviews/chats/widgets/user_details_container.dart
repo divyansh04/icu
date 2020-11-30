@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icu/provider/image_upload_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/enum/user_state.dart';
 import 'package:icu/models/user.dart';
@@ -71,12 +72,17 @@ class UserDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final User user = userProvider.getUser;
-
+    bool isEmptyImage(){
+      if(user.profilePhoto==null){
+        return true;
+      }
+      else return false;
+    }
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: Row(
         children: [
-          CachedImage(
+          isEmptyImage()?CircleAvatar(backgroundImage: AssetImage('assets/profile.jpg'),radius: 25):CachedImage(
             user.profilePhoto,
             isRound: true,
             radius: 50,

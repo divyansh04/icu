@@ -29,8 +29,7 @@ class UserCircle extends StatelessWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.center,
-              child: Text(
-                Utils.getInitials(userProvider.getUser.name),
+              child: Text(Utils.getInitials(userProvider.getUser.name),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: UniversalVariables.lightBlueColor,

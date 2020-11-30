@@ -56,6 +56,9 @@ dependencies:
   # firebase storage
   firebase_storage: ^3.1.1
 
+  #flutter toast
+  fluttertoast: ^7.1.5
+
   # provider
   provider: ^4.0.3
 
@@ -95,6 +98,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - app_logo.png
+    - google.png
+    - profile.jpg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

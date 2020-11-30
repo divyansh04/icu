@@ -16,7 +16,7 @@ class Utils {
   static String getInitials(String name) {
     List<String> nameSplit = name.split(" ");
     String firstNameInitial = nameSplit[0][0];
-    String lastNameInitial = nameSplit[1][0];
+    String lastNameInitial=nameSplit[0][1];
     return firstNameInitial + lastNameInitial;
   }
 
@@ -67,7 +67,7 @@ class Utils {
 
   static String formatDateString(String dateString) {
     DateTime dateTime = DateTime.parse(dateString);
-    var formatter = DateFormat('dd/MM/yy');
+    var formatter = DateFormat('dd/MM/yy   hh:mm aaa');
     return formatter.format(dateTime);
   }
 }
