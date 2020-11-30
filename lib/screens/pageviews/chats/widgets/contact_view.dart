@@ -49,7 +49,12 @@ class ViewLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-
+    bool isEmptyImage(){
+      if(contact.profilePhoto==null){
+        return true;
+      }
+      else return false;
+    }
     return CustomTile(
       mini: false,
       onTap: () => Navigator.push(
@@ -74,7 +79,7 @@ class ViewLayout extends StatelessWidget {
         constraints: BoxConstraints(maxHeight: 60, maxWidth: 60),
         child: Stack(
           children: <Widget>[
-            CachedImage(
+            isEmptyImage()?CircleAvatar(backgroundImage: AssetImage('assets/profile.jpg'),radius: 30):CachedImage(
               contact.profilePhoto,
               radius: 80,
               isRound: true,

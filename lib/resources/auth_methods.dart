@@ -43,7 +43,7 @@ class AuthMethods {
     }
   }
 
-  Future<FirebaseUser> signIn() async {
+  Future<FirebaseUser> signInWithGoogle() async {
     try {
       GoogleSignInAccount _signInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication _signInAuthentication =
@@ -60,6 +60,30 @@ class AuthMethods {
       Fluttertoast.showToast(msg: 'Signed in Failed',textColor: Colors.black,backgroundColor: Colors.white);
       print("Auth methods error");
       print(e);
+      return null;
+    }
+  }
+  Future<FirebaseUser> signUp(email,password)async{
+    try{
+      FirebaseUser user=await _auth.createUserWithEmailAndPassword(email: email.text, password: password.text);
+      Fluttertoast.showToast(msg: 'Signed Up Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+      return user;
+    }catch(e){
+      Fluttertoast.showToast(msg: 'Sign Up Failed',textColor: Colors.black,backgroundColor: Colors.white);
+      print("Auth methods error");
+      print(e.toString());
+      return null;
+    }
+  }
+  Future<FirebaseUser> signIn(email,password)async{
+    try{
+      FirebaseUser user=await _auth.signInWithEmailAndPassword(email: email.text, password: password.text);
+      Fluttertoast.showToast(msg: 'Signed In Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+      return user;
+    }catch(e){
+      Fluttertoast.showToast(msg: 'Sign In Failed',textColor: Colors.black,backgroundColor: Colors.white);
+      print("Auth methods error");
+      print(e.toString());
       return null;
     }
   }
@@ -84,6 +108,21 @@ class AuthMethods {
         email: currentUser.email,
         name: currentUser.displayName,
         profilePhoto: currentUser.photoUrl,
+        username: username);
+
+    firestore
+        .collection(USERS_COLLECTION)
+        .document(currentUser.uid)
+        .setData(user.toMap(user));
+  }
+  Future<void> addDataToDataBase(FirebaseUser currentUser, name) async {
+    String username = Utils.getUsername(currentUser.email);
+
+    User user = User(
+        uid: currentUser.uid,
+        email: currentUser.email,
+        name: name.toString(),
+        profilePhoto: null,
         username: username);
 
     firestore
