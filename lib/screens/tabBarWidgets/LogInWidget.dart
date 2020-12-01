@@ -166,7 +166,7 @@ class _LogInWidgetState extends State<LogInWidget> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'sign in with',
+                            'Continue with',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white,

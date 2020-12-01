@@ -4,6 +4,7 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/home_screen.dart';
 import 'package:icu/utils/universal_variables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class SignUpWidget extends StatefulWidget {
   @override
   _SignUpWidgetState createState() => _SignUpWidgetState();
@@ -199,11 +200,16 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30.0),
                             elevation: 2.0,
-                            child: MaterialButton(onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                performSignUp();
-                              }
-                            }),
+                            child: MaterialButton(
+                                child: Text(
+                                  'Sign Up',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                onPressed: () async {
+                                  if (_formKey.currentState.validate()) {
+                                    performSignUp();
+                                  }
+                                }),
                           ),
                         ),
                       ],
@@ -214,6 +220,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             ),
           );
   }
+
   void performSignUp() async {
     setState(() {
       isSignUpPressed = true;
@@ -228,6 +235,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       isSignUpPressed = false;
     });
   }
+
   void authenticateUser(FirebaseUser user) {
     _authMethods.authenticateUser(user).then((isNewUser) {
       setState(() {
@@ -235,17 +243,17 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       });
 
       if (isNewUser) {
-        _authMethods.addDataToDataBase(user,name.text).then((value) {
+        _authMethods.addDataToDataBase(user, name.text).then((value) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-                return HomeScreen();
-              }));
+            return HomeScreen();
+          }));
         });
       } else {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
-              return HomeScreen();
-            }));
+          return HomeScreen();
+        }));
       }
     });
   }
