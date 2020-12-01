@@ -201,15 +201,18 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             borderRadius: BorderRadius.circular(30.0),
                             elevation: 2.0,
                             child: MaterialButton(
-                                child: Text(
-                                  'Sign Up',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                onPressed: () async {
-                                  if (_formKey.currentState.validate()) {
-                                    performSignUp();
-                                  }
-                                }),
+                              child: Text(
+                                'Sign Up',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              minWidth: 200.0,
+                              height: 42.0,
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  performSignUp();
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ],
