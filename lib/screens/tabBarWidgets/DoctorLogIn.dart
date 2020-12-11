@@ -3,16 +3,15 @@ import 'package:icu/main.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/resources/auth_methods.dart';
-import 'package:icu/screens/tabBarWidgets/DoctorLogIn.dart';
 import 'package:icu/screens/tabBarWidgets/forgotPassord.dart';
 import 'package:icu/utils/universal_variables.dart';
 
-class LogInWidget extends StatefulWidget {
+class DoctorLogIn extends StatefulWidget {
   @override
-  _LogInWidgetState createState() => _LogInWidgetState();
+  _DoctorLogInState createState() => _DoctorLogInState();
 }
 
-class _LogInWidgetState extends State<LogInWidget> {
+class _DoctorLogInState extends State<DoctorLogIn> {
   var _formKey = GlobalKey<FormState>();
   bool hide = true;
   bool isLoginPressed = false;
@@ -26,6 +25,10 @@ class _LogInWidgetState extends State<LogInWidget> {
             child: CircularProgressIndicator(),
           )
         : Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
             backgroundColor: UniversalVariables.blackColor,
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -125,8 +128,8 @@ class _LogInWidgetState extends State<LogInWidget> {
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                    return ForgotPassword();
-                                  }));
+                                return ForgotPassword();
+                              }));
                             },
                             child: Text(
                               'Forgot Password?',
@@ -160,85 +163,12 @@ class _LogInWidgetState extends State<LogInWidget> {
                                 ),
                               ),
                             )),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            '-OR-',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Continue with',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17),
-                          ),
-                        ),
-                        googleSignInButton(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15, right: 8, bottom: 8),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return DoctorLogIn();
-                              }));
-                            },
-                            child: Text(
-                              'Log in as doctor',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ));
-  }
-
-  Widget googleSignInButton() {
-    return GestureDetector(
-      onTap: () {
-        performGoogleLogin();
-      },
-      child: Center(
-        child: CircleAvatar(
-          radius: 35.0,
-          backgroundImage: AssetImage("assets/google.png"),
-        ),
-      ),
-    );
-  }
-
-  void performGoogleLogin() async {
-    setState(() {
-      isLoginPressed = true;
-    });
-
-    FirebaseUser user = await _authMethods.signInWithGoogle();
-
-    if (user != null) {
-      authenticateUser(user);
-    }
-    setState(() {
-      isLoginPressed = false;
-    });
   }
 
   void performLogin() async {
@@ -263,7 +193,7 @@ class _LogInWidgetState extends State<LogInWidget> {
       });
 
       if (isNewUser) {
-        _authMethods.addDataToDb(user).then((value) {
+        _authMethods.addDoctorToDb(user).then((value) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return HomeWidget();

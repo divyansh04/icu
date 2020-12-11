@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icu/constants/strings.dart';
 import 'package:icu/enum/user_state.dart';
 import 'package:icu/models/user.dart';
+import 'package:icu/screens/login_screen.dart';
 import 'package:icu/utils/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,7 +32,7 @@ class AuthMethods {
   }
 
   Future<User> getUserDetails() async {
-     this.currentUser = await getCurrentUser();
+    this.currentUser = await getCurrentUser();
 
     DocumentSnapshot documentSnapshot =
         await _userCollection.document(currentUser.uid).get();
@@ -130,16 +131,34 @@ class AuthMethods {
 
   Future<bool> isDoctor(String id) async {
     DocumentSnapshot currentUser =
-    await _fireStore.collection('users').document(id).get();
+        await _fireStore.collection('users').document(id).get();
     //if user is doctor then length of list > 0 or else less than 0
     print(currentUser['userRole']);
-    return currentUser['userRole'] == 'doctor'? true : false;
+    return currentUser['userRole'] == 'doctor' ? true : false;
   }
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     String username = Utils.getUsername(currentUser.email);
 
     // TODO: add userRole
+    User user = User(
+      uid: currentUser.uid,
+      email: currentUser.email,
+      name: currentUser.displayName,
+      profilePhoto: currentUser.photoUrl,
+      username: username,
+      userRole: 'user',
+    );
+
+    firestore
+        .collection(USERS_COLLECTION)
+        .document(currentUser.uid)
+        .setData(user.toMap(user));
+  }
+
+  Future<void> addDoctorToDb(FirebaseUser currentUser) async {
+    String username = Utils.getUsername(currentUser.email);
+
     User user = User(
       uid: currentUser.uid,
       email: currentUser.email,
@@ -154,9 +173,10 @@ class AuthMethods {
         .document(currentUser.uid)
         .setData(user.toMap(user));
   }
+
   getCurrentUserDetails(String id) async {
     DocumentSnapshot currentUser =
-    await _fireStore.collection('users').document(id).get();
+        await _fireStore.collection('users').document(id).get();
     return currentUser;
   }
 
@@ -169,7 +189,7 @@ class AuthMethods {
       name: name.toString(),
       profilePhoto: null,
       username: username,
-      userRole: '',
+      userRole: 'user',
     );
 
     firestore
@@ -201,6 +221,8 @@ class AuthMethods {
       return false;
     }
   }
+
+
 
   void setUserState({@required String userId, @required UserState userState}) {
     int stateNum = Utils.stateToNum(userState);
