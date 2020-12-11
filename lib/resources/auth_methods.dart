@@ -14,7 +14,7 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore firestore = Firestore.instance;
-
+  Firestore _fireStore = Firestore.instance;
   static final CollectionReference _userCollection =
       _firestore.collection(USERS_COLLECTION);
 
@@ -128,16 +128,12 @@ class AuthMethods {
     return docs.length == 0 ? true : false;
   }
 
-  Future<bool> isDoctor() async {
-    QuerySnapshot result = await firestore
-        .collection(USERS_COLLECTION)
-        .where("userRole", isEqualTo: "doctor")
-        .getDocuments();
-
-    final List<DocumentSnapshot> docs = result.documents;
-
+  Future<bool> isDoctor(String id) async {
+    DocumentSnapshot currentUser =
+    await _fireStore.collection('users').document(id).get();
     //if user is doctor then length of list > 0 or else less than 0
-    return docs.length == 0 ? true : false;
+    print(currentUser['userRole']);
+    return currentUser['userRole'] == 'doctor'? true : false;
   }
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
@@ -150,13 +146,18 @@ class AuthMethods {
       name: currentUser.displayName,
       profilePhoto: currentUser.photoUrl,
       username: username,
-      userRole: currentUser.userRole,
+      userRole: 'doctor',
     );
 
     firestore
         .collection(USERS_COLLECTION)
         .document(currentUser.uid)
         .setData(user.toMap(user));
+  }
+  getCurrentUserDetails(String id) async {
+    DocumentSnapshot currentUser =
+    await _fireStore.collection('users').document(id).get();
+    return currentUser;
   }
 
   Future<void> addDataToDataBase(FirebaseUser currentUser, name) async {
@@ -168,7 +169,7 @@ class AuthMethods {
       name: name.toString(),
       profilePhoto: null,
       username: username,
-      userRole: currentUser.userRole,
+      userRole: '',
     );
 
     firestore

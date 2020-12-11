@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:icu/main.dart';
 import 'package:icu/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/constants/UIconstants.dart';
@@ -237,13 +238,13 @@ class _LogInWidgetState extends State<LogInWidget> {
         _authMethods.addDataToDb(user).then((value) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return HomeScreen();
+            return HomeWidget();
           }));
         });
       } else {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
-          return HomeScreen();
+          return HomeWidget();
         }));
       }
     });

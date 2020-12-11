@@ -9,25 +9,7 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/home_screen.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/screens/search_screen.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // FirebaseUser user =
-  await AuthMethods().getCurrentUser();
-
-  bool status;
-  status = await AuthMethods().isDoctor();
-  if (!status) {
-    //Launch Doctor portal
-    runApp(MyApp());
-  } else {
-    //Launch Patient portal
-    runApp(PatApp());
-  }
-  // runApp(MyApp());
-}
-
-///Doctor's app flow
+void main() => runApp(MyApp());
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -35,54 +17,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AuthMethods _authMethods = AuthMethods();
-
-  @override
-  Widget build(BuildContext context) {
-    final Widget loadingWidget =
-        _authMethods.getUser() != null ? HomeScreen() : LoginScreen();
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-      ],
-      child: MaterialApp(
-        title: "icu",
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/search_screen': (context) => SearchScreen(),
-        },
-        theme: ThemeData(brightness: Brightness.dark),
-        home: loadingWidget,
-        // FutureBuilder(
-        //   future: _authMethods.getCurrentUser(),
-        //   builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-        //     if (snapshot.hasData) {
-        //       return HomeScreen(); //widgetToLoad;
-        //       // if (snapshot.data.isDoctor == true) {
-        //       //   return HomeScreen();
-        //       // } else {
-        //       //   return Empty();
-        //       // }
-        //     } else {
-        //       return LoginScreen();
-        //     }
-        //   },
-        // ),
-      ),
-    );
-  }
-}
-
-///Patient app flow
-class PatApp extends StatefulWidget {
-  @override
-  _PatAppState createState() => _PatAppState();
-}
-
-class _PatAppState extends State<PatApp> {
-  final AuthMethods _authMethods = AuthMethods();
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -99,16 +33,11 @@ class _PatAppState extends State<PatApp> {
         },
         theme: ThemeData(brightness: Brightness.dark),
         home: FutureBuilder(
-          future: _authMethods.getCurrentUser(),
+          future: _authMethods.getCurrentUser() ,
           builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
             if (snapshot.hasData) {
-              return Empty(); //widgetToLoad;
-              // if (snapshot.data.isDoctor == true) {
-              //   return HomeScreen();
-              // } else {
-              //   return Empty();
-              // }
-            } else {
+              return HomeWidget();
+              } else {
               return LoginScreen();
             }
           },
@@ -118,20 +47,33 @@ class _PatAppState extends State<PatApp> {
   }
 }
 
-// class HomeWidget extends StatelessWidget {
-//   final AuthMethods _authMethods = AuthMethods();
+class HomeWidget extends StatefulWidget {
+  @override
+  _HomeWidgetState createState() => _HomeWidgetState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder(
-//       future: _authMethods.getUserDetails(),
-//       builder: (context, AsyncSnapshot<User> snapshot) {
-//         if (snapshot.hasData) {
-//           return HomeScreen();
-//         } else {
-//           return LoginScreen();
-//         }
-//       },
-//     );
-//   }
-// }
+class _HomeWidgetState extends State<HomeWidget> {
+  bool status;
+  bool loading;
+  @override
+  void initState() {
+initialWork();
+    super.initState();
+  }
+  initialWork()async{
+    setState(() {
+      loading=true;
+    });
+    FirebaseUser user = await AuthMethods().getCurrentUser();
+    print(user.email);
+    status = await AuthMethods().isDoctor(user.uid.toString());
+    print(status);
+    setState(() {
+      loading=false;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return loading? Center(child: CircularProgressIndicator()):status?Empty():HomeScreen();
+  }
+}

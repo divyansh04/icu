@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icu/constants/UIconstants.dart';
+import 'package:icu/main.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/home_screen.dart';
 import 'package:icu/utils/universal_variables.dart';
@@ -246,13 +247,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         _authMethods.addDataToDataBase(user, name.text).then((value) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return HomeScreen();
+            return HomeWidget();
           }));
         });
       } else {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
-          return HomeScreen();
+          return HomeWidget();
         }));
       }
     });
