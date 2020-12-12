@@ -14,18 +14,24 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore firestore = Firestore.instance;
-
+  Firestore _fireStore = Firestore.instance;
   static final CollectionReference _userCollection =
       _firestore.collection(USERS_COLLECTION);
 
+  FirebaseUser user;
+  FirebaseUser currentUser;
+
+  FirebaseUser getUser() {
+    return this.user;
+  }
+
   Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser currentUser;
-    currentUser = await _auth.currentUser();
-    return currentUser;
+    this.currentUser = await _auth.currentUser();
+    return this.currentUser;
   }
 
   Future<User> getUserDetails() async {
-    FirebaseUser currentUser = await getCurrentUser();
+     this.currentUser = await getCurrentUser();
 
     DocumentSnapshot documentSnapshot =
         await _userCollection.document(currentUser.uid).get();
@@ -54,34 +60,56 @@ class AuthMethods {
           idToken: _signInAuthentication.idToken);
 
       FirebaseUser user = await _auth.signInWithCredential(credential);
-      Fluttertoast.showToast(msg: 'Signed in Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Signed in Successfully',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       return user;
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Signed in Failed',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Signed in Failed',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       print("Auth methods error");
       print(e);
       return null;
     }
   }
-  Future<FirebaseUser> signUp(email,password)async{
-    try{
-      FirebaseUser user=await _auth.createUserWithEmailAndPassword(email: email.text, password: password.text);
-      Fluttertoast.showToast(msg: 'Signed Up Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+
+  Future<FirebaseUser> signUp(email, password) async {
+    try {
+      FirebaseUser user = await _auth.createUserWithEmailAndPassword(
+          email: email.text, password: password.text);
+      Fluttertoast.showToast(
+          msg: 'Signed Up Successfully',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       return user;
-    }catch(e){
-      Fluttertoast.showToast(msg: 'Sign Up Failed',textColor: Colors.black,backgroundColor: Colors.white);
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: 'Sign Up Failed',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       print("Auth methods error");
       print(e.toString());
       return null;
     }
   }
-  Future<FirebaseUser> signIn(email,password)async{
-    try{
-      FirebaseUser user=await _auth.signInWithEmailAndPassword(email: email.text, password: password.text);
-      Fluttertoast.showToast(msg: 'Signed In Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+
+  Future<FirebaseUser> signIn(email, password) async {
+    try {
+      FirebaseUser user = await _auth.signInWithEmailAndPassword(
+          email: email.text, password: password.text);
+      Fluttertoast.showToast(
+          msg: 'Signed In Successfully',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       return user;
-    }catch(e){
-      Fluttertoast.showToast(msg: 'Sign In Failed',textColor: Colors.black,backgroundColor: Colors.white);
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: 'Sign In Failed',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       print("Auth methods error");
       print(e.toString());
       return null;
@@ -100,30 +128,49 @@ class AuthMethods {
     return docs.length == 0 ? true : false;
   }
 
+  Future<bool> isDoctor(String id) async {
+    DocumentSnapshot currentUser =
+    await _fireStore.collection('users').document(id).get();
+    //if user is doctor then length of list > 0 or else less than 0
+    print(currentUser['userRole']);
+    return currentUser['userRole'] == 'doctor'? true : false;
+  }
+
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     String username = Utils.getUsername(currentUser.email);
 
+    // TODO: add userRole
     User user = User(
-        uid: currentUser.uid,
-        email: currentUser.email,
-        name: currentUser.displayName,
-        profilePhoto: currentUser.photoUrl,
-        username: username);
+      uid: currentUser.uid,
+      email: currentUser.email,
+      name: currentUser.displayName,
+      profilePhoto: currentUser.photoUrl,
+      username: username,
+      userRole: 'doctor',
+    );
 
     firestore
         .collection(USERS_COLLECTION)
         .document(currentUser.uid)
         .setData(user.toMap(user));
   }
+  getCurrentUserDetails(String id) async {
+    DocumentSnapshot currentUser =
+    await _fireStore.collection('users').document(id).get();
+    return currentUser;
+  }
+
   Future<void> addDataToDataBase(FirebaseUser currentUser, name) async {
     String username = Utils.getUsername(currentUser.email);
 
     User user = User(
-        uid: currentUser.uid,
-        email: currentUser.email,
-        name: name.toString(),
-        profilePhoto:'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4',
-        username: username);
+      uid: currentUser.uid,
+      email: currentUser.email,
+      name: name.toString(),
+      profilePhoto: null,
+      username: username,
+      userRole: '',
+    );
 
     firestore
         .collection(USERS_COLLECTION)

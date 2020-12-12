@@ -109,10 +109,11 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: suggestionList.length,
       itemBuilder: ((context, index) {
         User searchedUser = User(
-            uid: suggestionList[index].uid,
-            profilePhoto: suggestionList[index].profilePhoto,
-            name: suggestionList[index].name,
-            username: suggestionList[index].username);
+          uid: suggestionList[index].uid,
+          profilePhoto: suggestionList[index].profilePhoto,
+          name: suggestionList[index].name,
+          username: suggestionList[index].username,
+        );
 
         return CustomTile(
           mini: false,

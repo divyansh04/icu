@@ -48,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
     pageController = PageController();
   }
-
   @override
   void dispose() {
     super.dispose();
