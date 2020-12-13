@@ -13,15 +13,15 @@ class LogScreen extends StatelessWidget {
       scaffold: Scaffold(
         backgroundColor: UniversalVariables.blackColor,
         appBar: SkypeAppBar(
-          title: "Calls",
+          title: "Video Calls",
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: () => Navigator.pushNamed(context, "/search_screen"),
-            ),
+        //    IconButton(
+            //               icon: Icon(
+            //                 Icons.search,
+            //                 color: Colors.white,
+            //               ),
+            //               onPressed: () => Navigator.pushNamed(context, "/search_screen"),
+            //             ),
           ],
         ),
         floatingActionButton: FloatingColumn(),

@@ -42,10 +42,10 @@ class _SearchScreenState extends State<SearchScreen> {
           UniversalVariables.gradientColorEnd,
         ],
       ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Navigator.pop(context),
-      ),
+      //leading: IconButton(
+      //         icon: Icon(Icons.arrow_back, color: Colors.white),
+      //         onPressed: () => Navigator.pop(context),
+      //       ),
       elevation: 0,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight + 20),

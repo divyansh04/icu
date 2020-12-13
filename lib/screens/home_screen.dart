@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:icu/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/enum/user_state.dart';
 import 'package:icu/provider/user_provider.dart';
@@ -111,12 +112,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         body: PageView(
           children: <Widget>[
             ChatListScreen(),
+            SearchScreen(),
             LogScreen(),
-            Center(
-                child: Text(
-              "Contact Screen",
-              style: TextStyle(color: Colors.white),
-            )),
           ],
           controller: pageController,
           onPageChanged: onPageChanged,
@@ -143,12 +140,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.call,
+                  icon: Icon(Icons.search,
                       color: (_page == 1)
                           ? UniversalVariables.lightBlueColor
                           : UniversalVariables.greyColor),
                   title: Text(
-                    "Calls",
+                    "Search",
                     style: TextStyle(
                         fontSize: _labelFontSize,
                         color: (_page == 1)
@@ -157,12 +154,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.contact_phone,
+                  icon: Icon(Icons.call,
                       color: (_page == 2)
                           ? UniversalVariables.lightBlueColor
                           : UniversalVariables.greyColor),
                   title: Text(
-                    "Contacts",
+                    "Calls",
                     style: TextStyle(
                         fontSize: _labelFontSize,
                         color: (_page == 2)

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:icu/provider/image_upload_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/enum/user_state.dart';
 import 'package:icu/models/user.dart';
@@ -9,7 +8,6 @@ import 'package:icu/screens/chatscreens/widgets/cached_image.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/widgets/appbar.dart';
 
-import 'shimmering_logo.dart';
 
 class UserDetailsContainer extends StatelessWidget {
   final AuthMethods authMethods = AuthMethods();
@@ -49,7 +47,6 @@ class UserDetailsContainer extends StatelessWidget {
               onPressed: () => Navigator.maybePop(context),
             ),
             centerTitle: true,
-            title: ShimmeringLogo(),
             actions: <Widget>[
               FlatButton(
                 onPressed: () => signOut(),

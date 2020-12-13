@@ -11,7 +11,7 @@ import 'package:icu/screens/pageviews/chats/widgets/user_circle.dart';
 import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/widgets/skype_appbar.dart';
 
-import 'widgets/new_chat_button.dart';
+
 
 class ChatListScreen extends StatelessWidget {
   @override
@@ -22,25 +22,17 @@ class ChatListScreen extends StatelessWidget {
         appBar: SkypeAppBar(
           title: UserCircle(),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, "/search_screen");
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            ),
+           // IconButton(
+            //               icon: Icon(
+            //                 Icons.search,
+            //                 color: Colors.white,
+            //               ),
+            //               onPressed: () {
+            //                 Navigator.pushNamed(context, "/search_screen");
+            //               },
+            //             ),
           ],
         ),
-        floatingActionButton: NewChatButton(),
         body: ChatListContainer(),
       ),
     );
