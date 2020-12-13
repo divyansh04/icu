@@ -25,7 +25,6 @@ class ContactView extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           User user = snapshot.data;
-
           return ViewLayout(
             contact: user,
           );

@@ -139,7 +139,6 @@ class AuthMethods {
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     String username = Utils.getUsername(currentUser.email);
 
-    // TODO: add userRole
     User user = User(
       uid: currentUser.uid,
       email: currentUser.email,
@@ -162,7 +161,7 @@ class AuthMethods {
       uid: currentUser.uid,
       email: currentUser.email,
       name: currentUser.displayName,
-      profilePhoto: currentUser.photoUrl,
+      profilePhoto: 'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4',
       username: username,
       userRole: 'doctor',
     );
@@ -186,7 +185,7 @@ class AuthMethods {
       uid: currentUser.uid,
       email: currentUser.email,
       name: name.toString(),
-      profilePhoto: null,
+      profilePhoto: 'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4',
       username: username,
       userRole: 'user',
     );

@@ -39,8 +39,6 @@ dependencies:
   # Gradient app bar
   gradient_app_bar: ^0.1.3
 
-  # Emojies
-  emoji_picker: ^0.1.0
 
   # image_picker
   image_picker: ^0.6.3+1

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -100,28 +99,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 : Container(),
             chatControls(),
-            showEmojiPicker ? Container(child: emojiContainer()) : Container(),
           ],
         ),
       ),
-    );
-  }
-
-  emojiContainer() {
-    return EmojiPicker(
-      bgColor: UniversalVariables.separatorColor,
-      indicatorColor: UniversalVariables.blueColor,
-      rows: 3,
-      columns: 7,
-      onEmojiSelected: (emoji, category) {
-        setState(() {
-          isWriting = true;
-        });
-
-        textFieldController.text = textFieldController.text + emoji.emoji;
-      },
-      recommendKeywords: ["face", "happy", "party", "sad"],
-      numRecommended: 50,
     );
   }
 
@@ -278,43 +258,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     ],
                   ),
                 ),
-                Flexible(
-                  child: ListView(
-                    children: <Widget>[
-                      ModalTile(
-                        title: "Media",
-                        subtitle: "Share Photos and Video",
-                        icon: Icons.image,
-                        onTap: () => pickImage(source: ImageSource.gallery),
-                      ),
-                      ModalTile(
-                        title: "File",
-                        subtitle: "Share files",
-                        icon: Icons.tab,
-                      ),
-                      ModalTile(
-                        title: "Contact",
-                        subtitle: "Share contacts",
-                        icon: Icons.contacts,
-                      ),
-                      // ModalTile(
-                      //   title: "Location",
-                      //   subtitle: "Share a location",
-                      //   icon: Icons.add_location,
-                      // ),
-                      ModalTile(
-                        title: "Schedule Call",
-                        subtitle: "Arrange a call and get reminders",
-                        icon: Icons.schedule,
-                      ),
-                      // ModalTile(
-                      //   title: "Create Poll",
-                      //   subtitle: "Share polls",
-                      //   icon: Icons.poll,
-                      // )
-                    ],
-                  ),
-                ),
               ],
             );
           });
@@ -344,17 +287,6 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: EdgeInsets.all(10),
       child: Row(
         children: <Widget>[
-          GestureDetector(
-            onTap: () => addMediaModal(context),
-            child: Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                gradient: UniversalVariables.fabGradient,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.add),
-            ),
-          ),
           SizedBox(
             width: 5,
           ),
@@ -391,35 +323,22 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 IconButton(
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
                   onPressed: () {
-                    if (!showEmojiPicker) {
-                      // keyboard is visible
-                      hideKeyboard();
-                      showEmojiContainer();
-                    } else {
-                      //keyboard is hidden
-                      showKeyboard();
-                      hideEmojiContainer();
-                    }
+                    pickImage(source: ImageSource.gallery);
                   },
-                  icon: Icon(Icons.face),
-                ),
+                  icon: Icon(Icons.image),
+                )
               ],
             ),
           ),
           isWriting
               ? Container()
               : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Icon(Icons.record_voice_over),
-                ),
-          isWriting
-              ? Container()
-              : GestureDetector(
-                  child: Icon(Icons.camera_alt),
-                  onTap: () => pickImage(source: ImageSource.camera),
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    child: Icon(Icons.camera_alt),
+                    onTap: () => pickImage(source: ImageSource.camera),
+                  ),
                 ),
           isWriting
               ? Container(
@@ -477,12 +396,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     )
                   : {},
         ),
-        IconButton(
-          icon: Icon(
-            Icons.phone,
-          ),
-          onPressed: () {},
-        )
       ],
     );
   }
