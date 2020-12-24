@@ -4,20 +4,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icu/constants/strings.dart';
 import 'package:icu/enum/user_state.dart';
 import 'package:icu/models/user.dart';
-import 'package:icu/screens/login_screen.dart';
 import 'package:icu/utils/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthMethods {
-  static final Firestore _firestore = Firestore.instance;
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore firestore = Firestore.instance;
   Firestore _fireStore = Firestore.instance;
   static final CollectionReference _userCollection =
-      _firestore.collection(USERS_COLLECTION);
+      firestore.collection(USERS_COLLECTION);
 
   FirebaseUser user;
   FirebaseUser currentUser;
@@ -132,15 +129,19 @@ class AuthMethods {
   Future<bool> isDoctor(String id) async {
     DocumentSnapshot currentUser =
         await _fireStore.collection('users').document(id).get();
-    //if user is doctor then length of list > 0 or else less than 0
     print(currentUser['userRole']);
     return currentUser['userRole'] == 'doctor' ? true : false;
   }
+  Future<bool> isPatient(String id) async {
+    DocumentSnapshot currentUser =
+    await _fireStore.collection('users').document(id).get();
+    print(currentUser['userRole']);
+    return currentUser['userRole'] == 'patient' ? true : false;
+  }
+
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     String username = Utils.getUsername(currentUser.email);
-
-    // TODO: add userRole
     User user = User(
       uid: currentUser.uid,
       email: currentUser.email,

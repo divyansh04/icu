@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'login_screen.dart';
 
-class Empty extends StatefulWidget {
+class PatientScreen extends StatefulWidget {
   @override
-  _EmptyState createState() => _EmptyState();
+  _PatientScreenState createState() => _PatientScreenState();
 }
 
-class _EmptyState extends State<Empty> {
+class _PatientScreenState extends State<PatientScreen> {
   bool logout;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
@@ -21,6 +21,7 @@ class _EmptyState extends State<Empty> {
               child: FlatButton(
             child: Text('logOut'),
             onPressed: () {
+              print('log out------patient');
               logOut();
             },
           )),

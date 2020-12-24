@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:icu/screens/empty.dart';
+import 'package:icu/screens/PatientScreen.dart';
+import 'package:icu/screens/RelativeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/provider/image_upload_provider.dart';
 import 'package:icu/provider/user_provider.dart';
@@ -52,7 +53,8 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  bool status;
+  bool doctor;
+  bool patient;
   bool loading;
   @override
   void initState() {
@@ -65,14 +67,18 @@ initialWork();
     });
     FirebaseUser user = await AuthMethods().getCurrentUser();
     print(user.email);
-    status = await AuthMethods().isDoctor(user.uid.toString());
-    print(status);
+    doctor = await AuthMethods().isDoctor(user.uid.toString());
+    print(doctor);
+    if(!doctor){
+      patient = await AuthMethods().isPatient(user.uid.toString());
+    }
+    print(patient);
     setState(() {
       loading=false;
     });
   }
   @override
   Widget build(BuildContext context) {
-    return loading? Center(child: CircularProgressIndicator()):status?Empty():HomeScreen();
+    return loading? Center(child: CircularProgressIndicator()):doctor?HomeScreen():patient?PatientScreen():RelativeScreen();
   }
 }
