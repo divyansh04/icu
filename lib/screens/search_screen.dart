@@ -18,7 +18,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final AuthMethods _authMethods = AuthMethods();
-  String _currentUserId;
+
   User sender;
   List<User> userList;
   String query = "";
@@ -127,6 +127,7 @@ class _SearchScreenState extends State<SearchScreen> {
           mini: false,
           onTap: () {
             showDialog(
+                useRootNavigator: false,
                 context: context,
                 builder: (BuildContext context) {
                   return Dialog(
@@ -134,14 +135,17 @@ class _SearchScreenState extends State<SearchScreen> {
                         borderRadius:
                             BorderRadius.circular(20.0)), //this right here
                     child: Container(
-                      height: 150,
+                      height: 200,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("Proceed to call ${searchedUser.name} ?"),
+                            Text(
+                              "Proceed to call ${searchedUser.name} ?",
+                              style: TextStyle(fontSize: 20),
+                            ),
                             SizedBox(
                               height: 20,
                             ),
@@ -158,20 +162,27 @@ class _SearchScreenState extends State<SearchScreen> {
                                   ),
                                   color: Colors.red,
                                 ),
+                                SizedBox(width: 10),
                                 RaisedButton(
-                                  onPressed: () async => await Permissions
-                                          .cameraAndMicrophonePermissionsGranted()
-                                      ? CallUtils.dial(
-                                          from: sender,
-                                          to: searchedUser,
-                                          context: context,
-                                        )
-                                      : {},
+                                  elevation: 2.5,
+                                  onPressed: () async {
+                                    await Permissions
+                                            .cameraAndMicrophonePermissionsGranted()
+                                        ? {
+                                            Navigator.pop(context),
+                                            CallUtils.dial(
+                                              from: sender,
+                                              to: searchedUser,
+                                              context: this.context,
+                                            )
+                                          }
+                                        : {};
+                                  },
                                   child: Text(
                                     "Call",
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                  color: const Color(0xFF1BC0C5),
+                                  color: Colors.lightBlue,
                                 ),
                               ],
                             )
