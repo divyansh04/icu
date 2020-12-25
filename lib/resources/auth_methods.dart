@@ -132,13 +132,13 @@ class AuthMethods {
     print(currentUser['userRole']);
     return currentUser['userRole'] == 'doctor' ? true : false;
   }
+
   Future<bool> isPatient(String id) async {
     DocumentSnapshot currentUser =
-    await _fireStore.collection('users').document(id).get();
+        await _fireStore.collection('users').document(id).get();
     print(currentUser['userRole']);
     return currentUser['userRole'] == 'patient' ? true : false;
   }
-
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     String username = Utils.getUsername(currentUser.email);
@@ -212,6 +212,21 @@ class AuthMethods {
     return userList;
   }
 
+  Future<List<User>> fetchAllotedPatients(FirebaseUser currentUser) async {
+    List<User> userList = List<User>();
+
+    QuerySnapshot querySnapshot = await firestore
+        .collection(USERS_COLLECTION)
+        .where('doctorAlloted', isEqualTo: currentUser.displayName)
+        .getDocuments();
+    for (var i = 0; i < querySnapshot.documents.length; i++) {
+      if (querySnapshot.documents[i].documentID != currentUser.uid) {
+        userList.add(User.fromMap(querySnapshot.documents[i].data));
+      }
+    }
+    return userList;
+  }
+
   Future<bool> signOut() async {
     try {
       await _googleSignIn.signOut();
@@ -222,8 +237,6 @@ class AuthMethods {
       return false;
     }
   }
-
-
 
   void setUserState({@required String userId, @required UserState userState}) {
     int stateNum = Utils.stateToNum(userState);

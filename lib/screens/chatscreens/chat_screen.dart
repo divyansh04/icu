@@ -40,6 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   TextEditingController textFieldController = TextEditingController();
   FocusNode textFieldFocus = FocusNode();
+  // ignore: unused_field
   ScrollController _listScrollController = ScrollController();
 
   User sender;

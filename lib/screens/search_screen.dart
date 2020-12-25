@@ -6,6 +6,8 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:icu/screens/chatscreens/chat_screen.dart';
 import 'package:icu/screens/chatscreens/widgets/cached_image.dart';
+import 'package:icu/utils/call_utilities.dart';
+import 'package:icu/utils/permissions.dart';
 import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/widgets/custom_tile.dart';
 
@@ -16,7 +18,8 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final AuthMethods _authMethods = AuthMethods();
-
+  String _currentUserId;
+  User sender;
   List<User> userList;
   String query = "";
   TextEditingController searchController = TextEditingController();
@@ -26,9 +29,14 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
 
     _authMethods.getCurrentUser().then((FirebaseUser user) {
-      _authMethods.fetchAllUsers(user).then((List<User> list) {
+      _authMethods.fetchAllotedPatients(user).then((List<User> list) {
         setState(() {
           userList = list;
+          sender = User(
+            uid: user.uid.toString(),
+            name: user.displayName,
+            profilePhoto: user.photoUrl,
+          );
         });
       });
     });
@@ -118,12 +126,61 @@ class _SearchScreenState extends State<SearchScreen> {
         return CustomTile(
           mini: false,
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ChatScreen(
-                          receiver: searchedUser,
-                        )));
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20.0)), //this right here
+                    child: Container(
+                      height: 150,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("Proceed to call ${searchedUser.name} ?"),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RaisedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: Colors.red,
+                                ),
+                                RaisedButton(
+                                  onPressed: () async => await Permissions
+                                          .cameraAndMicrophonePermissionsGranted()
+                                      ? CallUtils.dial(
+                                          from: sender,
+                                          to: searchedUser,
+                                          context: context,
+                                        )
+                                      : {},
+                                  child: Text(
+                                    "Call",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: const Color(0xFF1BC0C5),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
           },
           leading: CachedImage(
             searchedUser.profilePhoto,
@@ -135,14 +192,14 @@ class _SearchScreenState extends State<SearchScreen> {
           //   backgroundColor: Colors.grey,
           // ),
           title: Text(
-            searchedUser.username,
+            searchedUser.name,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
           subtitle: Text(
-            searchedUser.name,
+            searchedUser.username.toString(),
             style: TextStyle(color: UniversalVariables.greyColor),
           ),
         );
