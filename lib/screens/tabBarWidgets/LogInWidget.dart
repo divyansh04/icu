@@ -27,14 +27,14 @@ class _LogInWidgetState extends State<LogInWidget> {
           )
         : Scaffold(
             backgroundColor: UniversalVariables.blackColor,
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              child: ListView(
-                children: <Widget>[
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Form(
+            body: ListView(
+              children: <Widget>[
+                SizedBox(
+                  height: 80,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Form(
                     key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -204,11 +204,14 @@ class _LogInWidgetState extends State<LogInWidget> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 48.0,
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ));
   }
 

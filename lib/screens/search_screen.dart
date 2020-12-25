@@ -4,7 +4,6 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
-import 'package:icu/screens/chatscreens/chat_screen.dart';
 import 'package:icu/screens/chatscreens/widgets/cached_image.dart';
 import 'package:icu/utils/call_utilities.dart';
 import 'package:icu/utils/permissions.dart';

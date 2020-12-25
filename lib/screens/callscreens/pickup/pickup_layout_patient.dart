@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:icu/screens/callscreens/pickup/pickup_screen_patient.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/models/call.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/call_methods.dart';
-import 'package:icu/screens/callscreens/pickup/pickup_screen.dart';
 
-class PickupLayout extends StatelessWidget {
+class PickupLayoutPatient extends StatelessWidget {
   final Widget scaffold;
   final CallMethods callMethods = CallMethods();
 
-  PickupLayout({
+  PickupLayoutPatient({
     @required this.scaffold,
   });
 
@@ -26,7 +26,7 @@ class PickupLayout extends StatelessWidget {
           Call call = Call.fromMap(snapshot.data.data);
 
           if (!call.hasDialled) {
-            return PickupScreen(call: call);
+            return  PickupScreenPatient(call: call);
           }
         }
         return scaffold;
