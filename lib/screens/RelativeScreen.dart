@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/enum/user_state.dart';
 import 'package:icu/provider/user_provider.dart';
@@ -7,6 +8,7 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:provider/provider.dart';
+import 'callscreens/Relative_Call_Screen.dart';
 import 'login_screen.dart';
 import 'package:flutter/scheduler.dart';
 class RelativeScreen extends StatefulWidget {
@@ -96,7 +98,12 @@ class _RelativeScreenState extends State<RelativeScreen> with WidgetsBindingObse
                       child: MaterialButton(
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
-                            //joining process
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RelativeCallScreen(id: code.toString(),),
+                              ),
+                            );
                           }
                         },
                         minWidth: 200.0,
@@ -131,11 +138,13 @@ class _RelativeScreenState extends State<RelativeScreen> with WidgetsBindingObse
   logOut() async {
     try {
       await _auth.signOut();
+      Fluttertoast.showToast(msg: 'Logged out Successfully',textColor: Colors.black,backgroundColor: Colors.white);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LoginScreen();
       }));
     } catch (e) {
       Navigator.pop(context);
+      Fluttertoast.showToast(msg: 'Log out failed',textColor: Colors.black,backgroundColor: Colors.white);
       print(e);
     }
   }

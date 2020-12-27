@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:icu/constants/strings.dart';
 import 'package:icu/models/call.dart';

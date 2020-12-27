@@ -5,22 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/configs/agora_configs.dart';
-import 'package:icu/models/call.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/call_methods.dart';
 
-class CallScreen extends StatefulWidget {
-  final Call call;
+class RelativeCallScreen extends StatefulWidget {
+  final String id;
 
-  CallScreen({
-    @required this.call,
+  RelativeCallScreen({
+    @required this.id,
   });
 
   @override
-  _CallScreenState createState() => _CallScreenState();
+  _RelativeCallScreenState createState() => _RelativeCallScreenState();
 }
 
-class _CallScreenState extends State<CallScreen> {
+class _RelativeCallScreenState extends State<RelativeCallScreen> {
   final CallMethods callMethods = CallMethods();
 
   UserProvider userProvider;
@@ -53,7 +52,7 @@ class _CallScreenState extends State<CallScreen> {
     await AgoraRtcEngine.enableWebSdkInteroperability(true);
     await AgoraRtcEngine.setParameters(
         '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
-    await AgoraRtcEngine.joinChannel(null, widget.call.channelId, null, 0);
+    await AgoraRtcEngine.joinChannel(null, widget.id, null, 0);
   }
 
   addPostFrameCallback() {
@@ -126,7 +125,7 @@ class _CallScreenState extends State<CallScreen> {
     };
 
     AgoraRtcEngine.onUserOffline = (int a, int b) {
-      callMethods.endCall(call: widget.call);
+      Navigator.pop(context);
       setState(() {
         final info = 'onUserOffline: a: ${a.toString()}, b: ${b.toString()}';
         _infoStrings.add(info);
@@ -321,9 +320,9 @@ class _CallScreenState extends State<CallScreen> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => callMethods.endCall(
-              call: widget.call,
-            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
             child: Icon(
               Icons.call_end,
               color: Colors.white,

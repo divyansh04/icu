@@ -8,6 +8,7 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout_patient.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'login_screen.dart';
 
 class PatientScreen extends StatefulWidget {
@@ -84,11 +85,13 @@ class _PatientScreenState extends State<PatientScreen>
   logOut() async {
     try {
       await _auth.signOut();
+      Fluttertoast.showToast(msg: 'Logged out Successfully',textColor: Colors.black,backgroundColor: Colors.white);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LoginScreen();
       }));
     } catch (e) {
       Navigator.pop(context);
+      Fluttertoast.showToast(msg: 'Log out Failed',textColor: Colors.black,backgroundColor: Colors.white);
       print(e);
     }
   }

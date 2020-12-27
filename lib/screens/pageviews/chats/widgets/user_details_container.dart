@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:icu/provider/image_upload_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/enum/user_state.dart';
 import 'package:icu/models/user.dart';

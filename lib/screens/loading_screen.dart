@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:icu/resources/shared_preference.dart';
 
 class LoadingScreen extends StatelessWidget {
   @override
