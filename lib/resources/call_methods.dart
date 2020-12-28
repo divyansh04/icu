@@ -3,9 +3,9 @@ import 'package:icu/constants/strings.dart';
 import 'package:icu/models/call.dart';
 
 class CallMethods {
+
   final CollectionReference callCollection =
       Firestore.instance.collection(CALL_COLLECTION);
-
   Stream<DocumentSnapshot> callStream({String uid}) =>
       callCollection.document(uid).snapshots();
 
@@ -36,4 +36,15 @@ class CallMethods {
       return false;
     }
   }
+  Future<bool> endDoctorCall({Call call,user}) async {
+    try {
+      await callCollection.document(call.callerId).updateData({'users':user});
+      await callCollection.document(call.receiverId).updateData({'users':user});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
 }

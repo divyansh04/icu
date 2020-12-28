@@ -9,31 +9,44 @@ import 'package:icu/models/call.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/call_methods.dart';
 
-class CallScreen extends StatefulWidget {
+class PatientCallScreen extends StatefulWidget {
   final Call call;
 
-  CallScreen({
+  PatientCallScreen({
     @required this.call,
   });
 
   @override
-  _CallScreenState createState() => _CallScreenState();
+  _PatientCallScreenState createState() => _PatientCallScreenState();
 }
 
-class _CallScreenState extends State<CallScreen> {
+class _PatientCallScreenState extends State<PatientCallScreen> {
   final CallMethods callMethods = CallMethods();
 
   UserProvider userProvider;
   StreamSubscription callStreamSubscription;
-
+  Timer timer;
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
-
+  int activeUsers;
+  Future<DocumentSnapshot> getUsers() =>
+      Firestore.instance.collection('call').document(widget.call.callerId).get().then((snaps) {
+        return snaps;
+      });
+  checkActiveUsers()async{
+    DocumentSnapshot users =
+        await getUsers();
+    activeUsers=users['users'];
+  if(activeUsers<=0){
+    callMethods.endCall(call: widget.call);
+  }
+  }
   @override
   void initState() {
     super.initState();
     addPostFrameCallback();
+   timer=Timer.periodic(Duration(seconds: 2),(Timer t)=>checkActiveUsers());
     initializeAgora();
   }
 
@@ -66,7 +79,7 @@ class _CallScreenState extends State<CallScreen> {
         // defining the logic
         switch (ds.data) {
           case null:
-            // snapshot is null which means that call is hanged and documents are deleted
+          // snapshot is null which means that call is hanged and documents are deleted
             Navigator.pop(context);
             break;
 
@@ -93,10 +106,10 @@ class _CallScreenState extends State<CallScreen> {
     };
 
     AgoraRtcEngine.onJoinChannelSuccess = (
-      String channel,
-      int uid,
-      int elapsed,
-    ) {
+        String channel,
+        int uid,
+        int elapsed,
+        ) {
       setState(() {
         final info = 'onJoinChannel: $channel, uid: $uid';
         _infoStrings.add(info);
@@ -165,11 +178,11 @@ class _CallScreenState extends State<CallScreen> {
     };
 
     AgoraRtcEngine.onFirstRemoteVideoFrame = (
-      int uid,
-      int width,
-      int height,
-      int elapsed,
-    ) {
+        int uid,
+        int width,
+        int height,
+        int elapsed,
+        ) {
       setState(() {
         final info = 'firstRemoteVideo: $uid ${width}x $height';
         _infoStrings.add(info);
@@ -208,32 +221,32 @@ class _CallScreenState extends State<CallScreen> {
       case 1:
         return Container(
             child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
+              children: <Widget>[_videoView(views[0])],
+            ));
       case 2:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow([views[0]]),
+                _expandedVideoRow([views[1]])
+              ],
+            ));
       case 3:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow(views.sublist(0, 2)),
+                _expandedVideoRow(views.sublist(2, 3))
+              ],
+            ));
       case 4:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow(views.sublist(0, 2)),
+                _expandedVideoRow(views.sublist(2, 4))
+              ],
+            ));
       default:
     }
     return Container();
@@ -321,12 +334,8 @@ class _CallScreenState extends State<CallScreen> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () {
-              int users=widget.call.users.toInt()-1;
-              print(users);
-              callMethods.endDoctorCall(
-                  call:widget.call,user: users);
-              Navigator.pop(context);},
+            onPressed: () => callMethods.endCall(
+            call: widget.call),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -359,9 +368,12 @@ class _CallScreenState extends State<CallScreen> {
     // clear users
     _users.clear();
     // destroy sdk
+    callMethods.endCall(
+        call: widget.call);
     AgoraRtcEngine.leaveChannel();
     AgoraRtcEngine.destroy();
     callStreamSubscription.cancel();
+
     super.dispose();
   }
 

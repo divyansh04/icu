@@ -4,8 +4,9 @@ import 'package:icu/models/call.dart';
 import 'package:icu/models/log.dart';
 import 'package:icu/resources/call_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
-import 'package:icu/screens/callscreens/call_screen.dart';
 import 'package:icu/utils/permissions.dart';
+
+import '../Patient_Call_Screen.dart';
 
 class PickupScreenPatient extends StatefulWidget {
   final Call call;
@@ -72,7 +73,7 @@ class _PickupScreenPatientState extends State<PickupScreenPatient> {
         ? Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CallScreen(call: widget.call),
+              builder: (context) => PatientCallScreen(call: widget.call),
             ),
           )
         // ignore: unnecessary_statements

@@ -11,12 +11,14 @@ import 'package:provider/provider.dart';
 import 'callscreens/Relative_Call_Screen.dart';
 import 'login_screen.dart';
 import 'package:flutter/scheduler.dart';
+
 class RelativeScreen extends StatefulWidget {
   @override
   _RelativeScreenState createState() => _RelativeScreenState();
 }
 
-class _RelativeScreenState extends State<RelativeScreen> with WidgetsBindingObserver {
+class _RelativeScreenState extends State<RelativeScreen>
+    with WidgetsBindingObserver {
   bool logout;
   UserProvider userProvider;
   PageController pageController;
@@ -48,89 +50,91 @@ class _RelativeScreenState extends State<RelativeScreen> with WidgetsBindingObse
 
     pageController = PageController();
   }
+
   @override
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
   }
+
   @override
   Widget build(BuildContext context) {
-    return PickupLayout(
-      scaffold: Scaffold(
-        body: Form(
-          key: _formKey,
-          child: Stack(children: [
-            Padding(
-              padding: const EdgeInsets.all(28.0),
-              child: ListView(children: [
-                SizedBox(
-                  height: 300.0,
-                ),
-                Material(
-                  borderRadius: BorderRadius.circular(10.0),
-                  elevation: 0.0,
-                  color: Colors.white.withOpacity(0.2),
-                  child: TextFormField(
-                    cursorColor: Colors.white,
-                    controller: code,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.text,
-                    // ignore: missing_return
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return "please enter code";
-                      }
-                    },
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter the code here',
-                        prefixIcon: Icon(Icons.link, color: Colors.white)),
+    return Scaffold(
+      body: Form(
+        key: _formKey,
+        child: Stack(children: [
+          Padding(
+            padding: const EdgeInsets.all(28.0),
+            child: ListView(children: [
+              SizedBox(
+                height: 300.0,
+              ),
+              Material(
+                borderRadius: BorderRadius.circular(10.0),
+                elevation: 0.0,
+                color: Colors.white.withOpacity(0.2),
+                child: TextFormField(
+                  cursorColor: Colors.white,
+                  controller: code,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.text,
+                  // ignore: missing_return
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return "please enter code";
+                    }
+                  },
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30.0),
-                      elevation: 2.0,
-                      child: MaterialButton(
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RelativeCallScreen(id: code.toString(),),
-                              ),
-                            );
-                          }
-                        },
-                        minWidth: 200.0,
-                        height: 42.0,
-                        child: Text(
-                          'join',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    )),
-              ]),
-            ),
-            Positioned(
-              top: 35,
-              right: 8,
-              child: MaterialButton(
-                onPressed: () {
-                  logOut();
-                },
-                child: Text(
-                  'Log Out',
-                  style: TextStyle(color: Colors.white),
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter the code here',
+                      prefixIcon: Icon(Icons.link, color: Colors.white)),
                 ),
               ),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.0),
+                    elevation: 2.0,
+                    child: MaterialButton(
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RelativeCallScreen(
+                                id: code.toString(),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: Text(
+                        'join',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  )),
+            ]),
+          ),
+          Positioned(
+            top: 35,
+            right: 8,
+            child: MaterialButton(
+              onPressed: () {
+                logOut();
+              },
+              child: Text(
+                'Log Out',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -138,13 +142,19 @@ class _RelativeScreenState extends State<RelativeScreen> with WidgetsBindingObse
   logOut() async {
     try {
       await _auth.signOut();
-      Fluttertoast.showToast(msg: 'Logged out Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Logged out Successfully',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LoginScreen();
       }));
     } catch (e) {
       Navigator.pop(context);
-      Fluttertoast.showToast(msg: 'Log out failed',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Log out failed',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       print(e);
     }
   }

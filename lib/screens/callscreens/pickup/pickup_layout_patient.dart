@@ -20,22 +20,23 @@ class PickupLayoutPatient extends StatelessWidget {
 
     return (userProvider != null && userProvider.getUser != null)
         ? StreamBuilder<DocumentSnapshot>(
-      stream: callMethods.callStream(uid: userProvider.getUser.uid),
-      builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data.data != null) {
-          Call call = Call.fromMap(snapshot.data.data);
-
-          if (!call.hasDialled) {
-            return  PickupScreenPatient(call: call);
-          }
-        }
-        return scaffold;
-      },
-    )
+            stream: callMethods.callStream(uid: userProvider.getUser.uid),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data.data != null) {
+                Call call = Call.fromMap(snapshot.data.data);
+                if (call.users > 0) {
+                  if (!call.hasDialled) {
+                    return PickupScreenPatient(call: call);
+                  }
+                }
+              }
+              return scaffold;
+            },
+          )
         : Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 }

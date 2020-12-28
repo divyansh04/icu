@@ -19,6 +19,7 @@ class CallUtils {
       receiverId: to.uid,
       receiverName: to.name,
       receiverPic: to.profilePhoto,
+      users: 1,
       channelId: Random().nextInt(1000).toString(),
     );
 
