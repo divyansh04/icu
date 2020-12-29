@@ -148,7 +148,7 @@ class AuthMethods {
       name: currentUser.displayName,
       profilePhoto: currentUser.photoUrl,
       username: username,
-      userRole: 'user',
+      userRole: '',
     );
 
     firestore
@@ -166,7 +166,7 @@ class AuthMethods {
       name: currentUser.displayName,
       profilePhoto: currentUser.photoUrl,
       username: username,
-      userRole: 'doctor',
+      userRole: '',
     );
 
     firestore
@@ -190,7 +190,7 @@ class AuthMethods {
       name: name.toString(),
       profilePhoto: null,
       username: username,
-      userRole: 'user',
+      userRole: ' ',
     );
 
     firestore

@@ -26,7 +26,7 @@ class CallMethods {
     }
   }
 
-  Future<bool> endCall({Call call}) async {
+  Future<bool> endPatientCall({Call call}) async {
     try {
       await callCollection.document(call.callerId).delete();
       await callCollection.document(call.receiverId).delete();
@@ -36,7 +36,7 @@ class CallMethods {
       return false;
     }
   }
-  Future<bool> endDoctorCall({Call call,user}) async {
+  Future<bool> endCall({Call call,user}) async {
     try {
       await callCollection.document(call.callerId).updateData({'users':user});
       await callCollection.document(call.receiverId).updateData({'users':user});

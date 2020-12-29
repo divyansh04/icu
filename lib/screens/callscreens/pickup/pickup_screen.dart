@@ -86,7 +86,7 @@ class _PickupScreenState extends State<PickupScreen> {
                   onPressed: () async {
                     isCallMissed = false;
                     addToLocalStorage(callStatus: CALL_STATUS_RECEIVED);
-                    await callMethods.endCall(call: widget.call);
+                    await callMethods.endPatientCall(call: widget.call);
                   },
                 ),
                 SizedBox(width: 25),

@@ -39,7 +39,7 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
         await getUsers();
     activeUsers=users['users'];
   if(activeUsers<=0){
-    callMethods.endCall(call: widget.call);
+    callMethods.endPatientCall(call: widget.call);
   }
   }
   @override
@@ -139,7 +139,7 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
     };
 
     AgoraRtcEngine.onUserOffline = (int a, int b) {
-      callMethods.endCall(call: widget.call);
+      callMethods.endPatientCall(call: widget.call);
       setState(() {
         final info = 'onUserOffline: a: ${a.toString()}, b: ${b.toString()}';
         _infoStrings.add(info);
@@ -334,7 +334,7 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => callMethods.endCall(
+            onPressed: () => callMethods.endPatientCall(
             call: widget.call),
             child: Icon(
               Icons.call_end,
@@ -368,7 +368,7 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
     // clear users
     _users.clear();
     // destroy sdk
-    callMethods.endCall(
+    callMethods.endPatientCall(
         call: widget.call);
     AgoraRtcEngine.leaveChannel();
     AgoraRtcEngine.destroy();

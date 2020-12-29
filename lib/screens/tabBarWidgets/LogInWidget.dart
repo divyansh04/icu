@@ -185,28 +185,28 @@ class _LogInWidgetState extends State<LogInWidget> {
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15, right: 8, bottom: 8),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return DoctorLogIn();
-                              }));
-                            },
-                            child: Text(
-                              'Log in as doctor',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 48.0,
-                        ),
+                        //Padding(
+                        //                           padding: const EdgeInsets.only(
+                        //                               top: 15, right: 8, bottom: 8),
+                        //                           child: InkWell(
+                        //                             onTap: () {
+                        //                               Navigator.push(context,
+                        //                                   MaterialPageRoute(builder: (context) {
+                        //                                 return DoctorLogIn();
+                        //                               }));
+                        //                             },
+                        //                             child: Text(
+                        //                               'Log in as doctor',
+                        //                               textAlign: TextAlign.right,
+                        //                               style: TextStyle(
+                        //                                 color: Colors.white,
+                        //                               ),
+                        //                             ),
+                        //                           ),
+                        //                         ),
+                        //                         SizedBox(
+                        //                           height: 48.0,
+                        //                         ),
                       ],
                     ),
                   ),

@@ -1,14 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/enum/user_state.dart';
+import 'package:icu/models/user.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
-import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
+import 'package:icu/screens/Join_Call_Screen.dart';
+import 'package:icu/utils/call_utilities_relative.dart';
+import 'package:icu/utils/permissions.dart';
 import 'package:provider/provider.dart';
-import 'callscreens/Relative_Call_Screen.dart';
 import 'login_screen.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -19,6 +21,8 @@ class RelativeScreen extends StatefulWidget {
 
 class _RelativeScreenState extends State<RelativeScreen>
     with WidgetsBindingObserver {
+  User sender;
+  DocumentSnapshot relative;
   bool logout;
   UserProvider userProvider;
   PageController pageController;
@@ -44,6 +48,7 @@ class _RelativeScreenState extends State<RelativeScreen>
         isHive: true,
         dbName: userProvider.getUser.uid,
       );
+      callRelativeDetails();
     });
 
     WidgetsBinding.instance.addObserver(this);
@@ -56,7 +61,14 @@ class _RelativeScreenState extends State<RelativeScreen>
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
   }
-
+  Future<DocumentSnapshot> getRelativeDetails() async =>
+      await Firestore.instance.collection('users').document(userProvider.getUser.uid).get().then((snaps) {
+        return snaps;
+      });
+  callRelativeDetails()async{
+    relative =
+    await getRelativeDetails();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,29 +81,6 @@ class _RelativeScreenState extends State<RelativeScreen>
               SizedBox(
                 height: 300.0,
               ),
-              Material(
-                borderRadius: BorderRadius.circular(10.0),
-                elevation: 0.0,
-                color: Colors.white.withOpacity(0.2),
-                child: TextFormField(
-                  cursorColor: Colors.white,
-                  controller: code,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.text,
-                  // ignore: missing_return
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return "please enter code";
-                    }
-                  },
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter the code here',
-                      prefixIcon: Icon(Icons.link, color: Colors.white)),
-                ),
-              ),
               Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Material(
@@ -100,21 +89,42 @@ class _RelativeScreenState extends State<RelativeScreen>
                     elevation: 2.0,
                     child: MaterialButton(
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RelativeCallScreen(
-                                id: code.toString(),
-                              ),
-                            ),
-                          );
+                        await Permissions
+                            .cameraAndMicrophonePermissionsGranted()
+                            ? {
+                          // ignore: unnecessary_statements
+                          CallUtilsRelative.dial(
+                            relative: relative,
+                            context: this.context,
+                          )
                         }
+                            : {};
                       },
                       minWidth: 200.0,
                       height: 42.0,
                       child: Text(
-                        'join',
+                        'Make a call',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  )),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.0),
+                    elevation: 2.0,
+                    child: MaterialButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return JoinCall();
+                        }));
+                      },
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: Text(
+                        'Join a call',
                         style: TextStyle(color: Colors.black),
                       ),
                     ),

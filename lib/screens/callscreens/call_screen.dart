@@ -126,7 +126,7 @@ class _CallScreenState extends State<CallScreen> {
     };
 
     AgoraRtcEngine.onUserOffline = (int a, int b) {
-      callMethods.endCall(call: widget.call);
+      callMethods.endPatientCall(call: widget.call);
       setState(() {
         final info = 'onUserOffline: a: ${a.toString()}, b: ${b.toString()}';
         _infoStrings.add(info);
@@ -324,7 +324,7 @@ class _CallScreenState extends State<CallScreen> {
             onPressed: () {
               int users=widget.call.users.toInt()-1;
               print(users);
-              callMethods.endDoctorCall(
+              callMethods.endCall(
                   call:widget.call,user: users);
               Navigator.pop(context);},
             child: Icon(
