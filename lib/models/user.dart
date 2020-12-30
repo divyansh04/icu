@@ -3,19 +3,21 @@ class User {
   String name;
   String email;
   String username;
-  String status;
-  int state;
-  String profilePhoto;
   String userRole;
+  String relativeName;
+  String relativeUid;
+  String patientName;
+  String patientUid;
 
   User({
+    this.patientName,
+    this.patientUid,
+    this.relativeName,
+    this.relativeUid,
     this.uid,
     this.name,
     this.email,
     this.username,
-    this.status,
-    this.state,
-    this.profilePhoto,
     this.userRole,
   });
 
@@ -25,10 +27,11 @@ class User {
     data['name'] = user.name;
     data['email'] = user.email;
     data['username'] = user.username;
-    data["status"] = user.status;
-    data["state"] = user.state;
-    data["profile_photo"] = user.profilePhoto;
     data["userRole"] = user.userRole;
+    data['relativeName'] = user.relativeName;
+    data['relativeUid'] = user.relativeUid;
+    data['patientName'] = user.patientName;
+    data['patientUid'] = user.patientUid;
     return data;
   }
 
@@ -38,9 +41,10 @@ class User {
     this.name = mapData['name'];
     this.email = mapData['email'];
     this.username = mapData['username'];
-    this.status = mapData['status'];
-    this.state = mapData['state'];
-    this.profilePhoto = mapData['profile_photo'];
     this.userRole = mapData['userRole'];
+    this.relativeName=mapData['relativeName'];
+    this.relativeUid=mapData['relativeUid'];
+    this.patientName=mapData['patientName'];
+    this.patientUid=mapData['patientUid'];
   }
 }

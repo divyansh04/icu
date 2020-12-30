@@ -28,9 +28,7 @@ class _PickupScreenPatientState extends State<PickupScreenPatient> {
   addToLocalStorage({@required String callStatus}) {
     Log log = Log(
       callerName: widget.call.callerName,
-      callerPic: widget.call.callerPic,
       receiverName: widget.call.receiverName,
-      receiverPic: widget.call.receiverPic,
       timestamp: DateTime.now().toString(),
       callStatus: callStatus,
     );

@@ -5,7 +5,6 @@ import 'package:icu/models/log.dart';
 import 'package:icu/resources/call_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/call_screen.dart';
-import 'package:icu/screens/chatscreens/widgets/cached_image.dart';
 import 'package:icu/utils/permissions.dart';
 
 class PickupScreen extends StatefulWidget {
@@ -29,9 +28,7 @@ class _PickupScreenState extends State<PickupScreen> {
   addToLocalStorage({@required String callStatus}) {
     Log log = Log(
       callerName: widget.call.callerName,
-      callerPic: widget.call.callerPic,
       receiverName: widget.call.receiverName,
-      receiverPic: widget.call.receiverPic,
       timestamp: DateTime.now().toString(),
       callStatus: callStatus,
     );
@@ -63,12 +60,6 @@ class _PickupScreenState extends State<PickupScreen> {
               ),
             ),
             SizedBox(height: 50),
-            CachedImage(
-              widget.call.callerPic,
-              isRound: true,
-              radius: 180,
-            ),
-            SizedBox(height: 15),
             Text(
               widget.call.callerName,
               style: TextStyle(

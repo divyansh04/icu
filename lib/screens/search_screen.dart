@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
-import 'package:icu/screens/chatscreens/widgets/cached_image.dart';
+import 'package:icu/screens/login_screen.dart';
 import 'package:icu/utils/call_utilities.dart';
 import 'package:icu/utils/permissions.dart';
 import 'package:icu/utils/universal_variables.dart';
@@ -17,7 +18,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final AuthMethods _authMethods = AuthMethods();
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   User sender;
   List<User> userList;
   String query = "";
@@ -34,7 +35,6 @@ class _SearchScreenState extends State<SearchScreen> {
           sender = User(
             uid: user.uid.toString(),
             name: user.displayName,
-            profilePhoto: user.photoUrl,
           );
         });
       });
@@ -43,15 +43,24 @@ class _SearchScreenState extends State<SearchScreen> {
 
   searchAppBar(BuildContext context) {
     return GradientAppBar(
-      gradient: LinearGradient(
+      centerTitle: true,
+      title: Text('Doctor Portal'),
+      actions:[
+        MaterialButton(
+          onPressed: () {
+            logOut();
+          },
+          child: Text(
+            'Log Out',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+            gradient: LinearGradient(
         colors: [
           UniversalVariables.gradientColorStart,
           UniversalVariables.gradientColorEnd,
         ],
-      ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Navigator.pop(context),
       ),
       elevation: 0,
       bottom: PreferredSize(
@@ -117,7 +126,6 @@ class _SearchScreenState extends State<SearchScreen> {
       itemBuilder: ((context, index) {
         User searchedUser = User(
           uid: suggestionList[index].uid,
-          profilePhoto: suggestionList[index].profilePhoto,
           name: suggestionList[index].name,
           username: suggestionList[index].username,
         );
@@ -192,15 +200,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 });
           },
-          leading: CachedImage(
-            searchedUser.profilePhoto,
-            radius: 25,
-            isRound: true,
-          ),
-          // leading: CircleAvatar(
-          //   backgroundImage: NetworkImage(searchedUser.profilePhoto),
-          //   backgroundColor: Colors.grey,
-          // ),
+
+          leading: CircleAvatar(
+             backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4'),
+             backgroundColor: Colors.grey,
+           ),
           title: Text(
             searchedUser.name,
             style: TextStyle(
@@ -229,5 +233,18 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
+  }
+  logOut() async {
+    try {
+      await _auth.signOut();
+      Fluttertoast.showToast(msg: 'Logged out Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return LoginScreen();
+      }));
+    } catch (e) {
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: 'Log out Failed',textColor: Colors.black,backgroundColor: Colors.white);
+      print(e);
+    }
   }
 }

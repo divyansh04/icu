@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icu/constants/strings.dart';
-import 'package:icu/enum/user_state.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/utils/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -146,25 +145,6 @@ class AuthMethods {
       uid: currentUser.uid,
       email: currentUser.email,
       name: currentUser.displayName,
-      profilePhoto: currentUser.photoUrl,
-      username: username,
-      userRole: '',
-    );
-
-    firestore
-        .collection(USERS_COLLECTION)
-        .document(currentUser.uid)
-        .setData(user.toMap(user));
-  }
-
-  Future<void> addDoctorToDb(FirebaseUser currentUser) async {
-    String username = Utils.getUsername(currentUser.email);
-
-    User user = User(
-      uid: currentUser.uid,
-      email: currentUser.email,
-      name: currentUser.displayName,
-      profilePhoto: currentUser.photoUrl,
       username: username,
       userRole: '',
     );
@@ -179,24 +159,6 @@ class AuthMethods {
     DocumentSnapshot currentUser =
         await _fireStore.collection('users').document(id).get();
     return currentUser;
-  }
-
-  Future<void> addDataToDataBase(FirebaseUser currentUser, name) async {
-    String username = Utils.getUsername(currentUser.email);
-
-    User user = User(
-      uid: currentUser.uid,
-      email: currentUser.email,
-      name: name.toString(),
-      profilePhoto: null,
-      username: username,
-      userRole: ' ',
-    );
-
-    firestore
-        .collection(USERS_COLLECTION)
-        .document(currentUser.uid)
-        .setData(user.toMap(user));
   }
 
   Future<List<User>> fetchAllUsers(FirebaseUser currentUser) async {
@@ -229,7 +191,6 @@ class AuthMethods {
 
   Future<bool> signOut() async {
     try {
-      await _googleSignIn.signOut();
       await _auth.signOut();
       return true;
     } catch (e) {
@@ -238,13 +199,6 @@ class AuthMethods {
     }
   }
 
-  void setUserState({@required String userId, @required UserState userState}) {
-    int stateNum = Utils.stateToNum(userState);
-
-    _userCollection.document(userId).updateData({
-      "state": stateNum,
-    });
-  }
 
   Stream<DocumentSnapshot> getUserStream({@required String uid}) =>
       _userCollection.document(uid).snapshots();

@@ -2,9 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:icu/enum/user_state.dart';
 import 'package:icu/provider/user_provider.dart';
-import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout_patient.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +19,6 @@ class _PatientScreenState extends State<PatientScreen>
   bool logout;
   UserProvider userProvider;
   PageController pageController;
-  final AuthMethods _authMethods = AuthMethods();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
@@ -31,10 +28,6 @@ class _PatientScreenState extends State<PatientScreen>
       userProvider = Provider.of<UserProvider>(context, listen: false);
       await userProvider.refreshUser();
 
-      _authMethods.setUserState(
-        userId: userProvider.getUser.uid,
-        userState: UserState.Online,
-      );
 
       LogRepository.init(
         isHive: true,

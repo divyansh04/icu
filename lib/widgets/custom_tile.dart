@@ -13,7 +13,7 @@ class CustomTile extends StatelessWidget {
   final GestureLongPressCallback onLongPress;
 
   CustomTile({
-    @required this.leading,
+     this.leading,
     @required this.title,
     this.icon,
     @required this.subtitle,

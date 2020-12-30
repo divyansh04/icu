@@ -15,10 +15,8 @@ class CallUtilsRelative {
     Call call = Call(
       callerId: relative['uid'],
       callerName: relative['name'],
-      callerPic: relative['profile_Photo'],
       receiverId: relative['patientUid'],
       receiverName: relative['patientName'],
-      receiverPic: relative['patientProfilePhoto'],
       users: 1,
       channelId: Random().nextInt(1000).toString(),
     );

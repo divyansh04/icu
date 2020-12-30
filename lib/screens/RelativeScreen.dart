@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:icu/enum/user_state.dart';
+import 'package:icu/models/call.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/provider/user_provider.dart';
-import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/Join_Call_Screen.dart';
 import 'package:icu/utils/call_utilities_relative.dart';
@@ -21,12 +20,12 @@ class RelativeScreen extends StatefulWidget {
 
 class _RelativeScreenState extends State<RelativeScreen>
     with WidgetsBindingObserver {
+  Call call;
   User sender;
   DocumentSnapshot relative;
   bool logout;
   UserProvider userProvider;
   PageController pageController;
-  final AuthMethods _authMethods = AuthMethods();
   TextEditingController code = TextEditingController();
   var _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,11 +37,6 @@ class _RelativeScreenState extends State<RelativeScreen>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       userProvider = Provider.of<UserProvider>(context, listen: false);
       await userProvider.refreshUser();
-
-      _authMethods.setUserState(
-        userId: userProvider.getUser.uid,
-        userState: UserState.Online,
-      );
 
       LogRepository.init(
         isHive: true,
