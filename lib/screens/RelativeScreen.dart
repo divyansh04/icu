@@ -130,7 +130,7 @@ class _RelativeScreenState extends State<RelativeScreen>
                                               height: 20,
                                             ),
                                             Text(
-                                              "Calling hours: 2:00 PM-5:00PM  \n                          7:00PM-9:00PM",
+                                              "Calling hours: 11:00 PM-4:00PM  \n                          7:00PM-9:00PM",
                                               style: TextStyle(fontSize: 15),
                                             ),
                                             SizedBox(
