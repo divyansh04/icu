@@ -6,31 +6,29 @@ import 'package:icu/models/call.dart';
 import 'package:icu/models/log.dart';
 import 'package:icu/resources/call_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
-import 'package:icu/screens/callscreens/call_screen.dart';
+import 'package:icu/screens/callscreens/Relative_Initiated_Call_Screen.dart';
 
 class CallUtilsRelative {
   static final CallMethods callMethods = CallMethods();
 
   static dial({ DocumentSnapshot relative, context}) async {
     Call call = Call(
-      callerId: relative['uid'],
-      callerName: relative['name'],
-      receiverId: relative['patientUid'],
-      receiverName: relative['patientName'],
+      relativeId: relative['uid'],
+      relativeName: relative['name'],
+      patientId: relative['patientUid'],
+      patientName: relative['patientName'],
       users: 1,
       channelId: Random().nextInt(1000).toString(),
     );
 
     Log log = Log(
       callerName: relative['name'],
-      callerPic: relative['profile_Photo'],
       callStatus: CALL_STATUS_DIALLED,
       receiverName: relative['patientName'],
-      receiverPic:  relative['patientProfilePhoto'],
       timestamp: DateTime.now().toString(),
     );
 
-    bool callMade = await callMethods.makeCall(call: call);
+    bool callMade = await callMethods.makeRelativeCall(call: call);
 
     call.hasDialled = true;
 
@@ -41,7 +39,7 @@ class CallUtilsRelative {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CallScreen(call: call),
+          builder: (context) => RelativeInitiatedCallScreen(call: call),
         ),
       );
     }

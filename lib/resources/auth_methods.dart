@@ -174,12 +174,12 @@ class AuthMethods {
     return userList;
   }
 
-  Future<List<User>> fetchAllotedPatients(FirebaseUser currentUser) async {
+  Future<List<User>> fetchPatients(FirebaseUser currentUser) async {
     List<User> userList = List<User>();
 
     QuerySnapshot querySnapshot = await firestore
         .collection(USERS_COLLECTION)
-        .where('doctorAlloted', isEqualTo: currentUser.displayName)
+        .where('userRole', isEqualTo: 'patient')
         .getDocuments();
     for (var i = 0; i < querySnapshot.documents.length; i++) {
       if (querySnapshot.documents[i].documentID != currentUser.uid) {

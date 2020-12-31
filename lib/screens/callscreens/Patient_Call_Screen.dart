@@ -31,13 +31,14 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
   bool muted = false;
   int activeUsers;
   Future<DocumentSnapshot> getUsers() =>
-      Firestore.instance.collection('call').document(widget.call.callerId).get().then((snaps) {
+      Firestore.instance.collection('call').document(widget.call.patientId).get().then((snaps) {
         return snaps;
       });
   checkActiveUsers()async{
     DocumentSnapshot users =
         await getUsers();
     activeUsers=users['users'];
+    print(users['users']);
   if(activeUsers<=0){
     callMethods.endPatientCall(call: widget.call);
   }
@@ -367,6 +368,7 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
   void dispose() {
     // clear users
     _users.clear();
+    timer.cancel();
     // destroy sdk
     callMethods.endPatientCall(
         call: widget.call);

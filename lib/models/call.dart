@@ -1,17 +1,21 @@
 class Call {
-  String callerId;
-  String callerName;
-  String receiverId;
-  String receiverName;
+  String doctorId;
+  String doctorName;
+  String patientId;
+  String patientName;
+  String relativeId;
+  String relativeName;
   String channelId;
   bool hasDialled;
   int users;
 
   Call({
-    this.callerId,
-    this.callerName,
-    this.receiverId,
-    this.receiverName,
+    this.doctorId,
+    this.doctorName,
+    this.patientId,
+    this.patientName,
+    this.relativeId,
+  this.relativeName,
     this.channelId,
     this.hasDialled,
     this.users
@@ -20,10 +24,12 @@ class Call {
   // to map
   Map<String, dynamic> toMap(Call call) {
     Map<String, dynamic> callMap = Map();
-    callMap["caller_id"] = call.callerId;
-    callMap["caller_name"] = call.callerName;
-    callMap["receiver_id"] = call.receiverId;
-    callMap["receiver_name"] = call.receiverName;
+    callMap["doctor_id"] = call.doctorId;
+    callMap["doctor_name"] = call.doctorName;
+    callMap["patient_id"] = call.patientId;
+    callMap["patient_name"] = call.patientName;
+    callMap["relative_id"] = call.relativeId;
+    callMap["relative_name"] = call.relativeName;
     callMap["channel_id"] = call.channelId;
     callMap["has_dialled"] = call.hasDialled;
     callMap["users"] = call.users;
@@ -31,10 +37,12 @@ class Call {
   }
 
   Call.fromMap(Map callMap) {
-    this.callerId = callMap["caller_id"];
-    this.callerName = callMap["caller_name"];
-    this.receiverId = callMap["receiver_id"];
-    this.receiverName = callMap["receiver_name"];
+    this.doctorId = callMap["doctor_id"];
+    this.doctorName = callMap["doctor_name"];
+    this.patientId = callMap["patient_id"];
+    this.patientName = callMap["patient_name"];
+    this.relativeId = callMap["relative_id"];
+    this.relativeName = callMap["relative_name"];
     this.channelId = callMap["channel_id"];
     this.hasDialled = callMap["has_dialled"];
     this.users= callMap["users"];

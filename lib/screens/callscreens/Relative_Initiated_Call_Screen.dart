@@ -3,25 +3,24 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:icu/models/call.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/configs/agora_configs.dart';
+import 'package:icu/models/call.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/call_methods.dart';
 
-class RelativeCallScreen extends StatefulWidget {
-  final String id;
+class RelativeInitiatedCallScreen extends StatefulWidget {
   final Call call;
-  RelativeCallScreen({
-    @required this.id,
-    this.call,
+
+  RelativeInitiatedCallScreen({
+    @required this.call,
   });
 
   @override
-  _RelativeCallScreenState createState() => _RelativeCallScreenState();
+  _RelativeInitiatedCallScreenState createState() => _RelativeInitiatedCallScreenState();
 }
 
-class _RelativeCallScreenState extends State<RelativeCallScreen> {
+class _RelativeInitiatedCallScreenState extends State<RelativeInitiatedCallScreen> {
   final CallMethods callMethods = CallMethods();
 
   UserProvider userProvider;
@@ -54,7 +53,7 @@ class _RelativeCallScreenState extends State<RelativeCallScreen> {
     await AgoraRtcEngine.enableWebSdkInteroperability(true);
     await AgoraRtcEngine.setParameters(
         '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
-    await AgoraRtcEngine.joinChannel(null, widget.id, null, 0);
+    await AgoraRtcEngine.joinChannel(null, widget.call.channelId, null, 0);
   }
 
   addPostFrameCallback() {
@@ -67,7 +66,7 @@ class _RelativeCallScreenState extends State<RelativeCallScreen> {
         // defining the logic
         switch (ds.data) {
           case null:
-            // snapshot is null which means that call is hanged and documents are deleted
+          // snapshot is null which means that call is hanged and documents are deleted
             Navigator.pop(context);
             break;
 
@@ -94,10 +93,10 @@ class _RelativeCallScreenState extends State<RelativeCallScreen> {
     };
 
     AgoraRtcEngine.onJoinChannelSuccess = (
-      String channel,
-      int uid,
-      int elapsed,
-    ) {
+        String channel,
+        int uid,
+        int elapsed,
+        ) {
       setState(() {
         final info = 'onJoinChannel: $channel, uid: $uid';
         _infoStrings.add(info);
@@ -166,11 +165,11 @@ class _RelativeCallScreenState extends State<RelativeCallScreen> {
     };
 
     AgoraRtcEngine.onFirstRemoteVideoFrame = (
-      int uid,
-      int width,
-      int height,
-      int elapsed,
-    ) {
+        int uid,
+        int width,
+        int height,
+        int elapsed,
+        ) {
       setState(() {
         final info = 'firstRemoteVideo: $uid ${width}x $height';
         _infoStrings.add(info);
@@ -209,32 +208,32 @@ class _RelativeCallScreenState extends State<RelativeCallScreen> {
       case 1:
         return Container(
             child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
+              children: <Widget>[_videoView(views[0])],
+            ));
       case 2:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow([views[0]]),
+                _expandedVideoRow([views[1]])
+              ],
+            ));
       case 3:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow(views.sublist(0, 2)),
+                _expandedVideoRow(views.sublist(2, 3))
+              ],
+            ));
       case 4:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow(views.sublist(0, 2)),
+                _expandedVideoRow(views.sublist(2, 4))
+              ],
+            ));
       default:
     }
     return Container();
@@ -323,11 +322,11 @@ class _RelativeCallScreenState extends State<RelativeCallScreen> {
           ),
           RawMaterialButton(
             onPressed: () {
-              int users = widget.call.users.toInt() - 1;
+              int users=widget.call.users.toInt()-1;
               print(users);
-              callMethods.endCall(call: widget.call, user: users);
-              Navigator.pop(context);
-            },
+              callMethods.endRelativeInitiatedCall(
+                  call:widget.call,user: users);
+              Navigator.pop(context);},
             child: Icon(
               Icons.call_end,
               color: Colors.white,

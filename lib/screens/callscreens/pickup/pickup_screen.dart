@@ -27,8 +27,8 @@ class _PickupScreenState extends State<PickupScreen> {
 
   addToLocalStorage({@required String callStatus}) {
     Log log = Log(
-      callerName: widget.call.callerName,
-      receiverName: widget.call.receiverName,
+      callerName: widget.call.doctorId,
+      receiverName: widget.call.patientId,
       timestamp: DateTime.now().toString(),
       callStatus: callStatus,
     );
@@ -61,7 +61,7 @@ class _PickupScreenState extends State<PickupScreen> {
             ),
             SizedBox(height: 50),
             Text(
-              widget.call.callerName,
+              widget.call.patientName,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -77,7 +77,7 @@ class _PickupScreenState extends State<PickupScreen> {
                   onPressed: () async {
                     isCallMissed = false;
                     addToLocalStorage(callStatus: CALL_STATUS_RECEIVED);
-                    await callMethods.endPatientCall(call: widget.call);
+                    await callMethods.endRelativeIncomingCall(call: widget.call);
                   },
                 ),
                 SizedBox(width: 25),
@@ -85,6 +85,10 @@ class _PickupScreenState extends State<PickupScreen> {
                     icon: Icon(Icons.call),
                     color: Colors.green,
                     onPressed: () async {
+                      int users=widget.call.users.toInt()+1;
+                      print(users);
+                      callMethods.joinCall(
+                          call:widget.call,user: users);
                       isCallMissed = false;
                       addToLocalStorage(callStatus: CALL_STATUS_RECEIVED);
                       await Permissions.cameraAndMicrophonePermissionsGranted()

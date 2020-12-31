@@ -29,6 +29,7 @@ class _CallScreenState extends State<CallScreen> {
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
+  int activeUsers;
 
   @override
   void initState() {
@@ -36,7 +37,16 @@ class _CallScreenState extends State<CallScreen> {
     addPostFrameCallback();
     initializeAgora();
   }
-
+  Future<DocumentSnapshot> getUsers() =>
+      Firestore.instance.collection('call').document(widget.call.patientId).get().then((snaps) {
+        return snaps;
+      });
+  Future<int>checkActiveUsers()async{
+    DocumentSnapshot users =
+    await getUsers();
+    print(users['users']);
+    return activeUsers=users['users'];
+  }
   Future<void> initializeAgora() async {
     if (APP_ID.isEmpty) {
       setState(() {
@@ -321,8 +331,9 @@ class _CallScreenState extends State<CallScreen> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () {
-              int users=widget.call.users.toInt()-1;
+            onPressed: () async{
+              await checkActiveUsers();
+              int users=activeUsers-1;
               print(users);
               callMethods.endCall(
                   call:widget.call,user: users);

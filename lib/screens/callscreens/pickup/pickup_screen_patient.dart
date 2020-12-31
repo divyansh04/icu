@@ -27,8 +27,8 @@ class _PickupScreenPatientState extends State<PickupScreenPatient> {
   bool isCallMissed = true;
   addToLocalStorage({@required String callStatus}) {
     Log log = Log(
-      callerName: widget.call.callerName,
-      receiverName: widget.call.receiverName,
+      callerName: widget.call.doctorName,
+      receiverName: widget.call.patientName,
       timestamp: DateTime.now().toString(),
       callStatus: callStatus,
     );

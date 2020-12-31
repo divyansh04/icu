@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:icu/constants/UIconstants.dart';
-import 'callscreens/Relative_Call_Screen.dart';
 
 class JoinCall extends StatefulWidget {
   @override

@@ -13,10 +13,12 @@ class CallUtils {
 
   static dial({User from, User to, context}) async {
     Call call = Call(
-      callerId: from.uid,
-      callerName: from.name,
-      receiverId: to.uid,
-      receiverName: to.name,
+      doctorId: from.uid,
+      doctorName: from.name,
+      patientId: to.uid,
+      patientName: to.name,
+      relativeId: to.relativeUid,
+      relativeName: to.relativeName,
       users: 1,
       channelId: Random().nextInt(1000).toString(),
     );

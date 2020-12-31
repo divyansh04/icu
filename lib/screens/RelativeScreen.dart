@@ -7,6 +7,7 @@ import 'package:icu/models/user.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/Join_Call_Screen.dart';
+import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:icu/utils/call_utilities_relative.dart';
 import 'package:icu/utils/permissions.dart';
 import 'package:provider/provider.dart';
@@ -61,84 +62,85 @@ class _RelativeScreenState extends State<RelativeScreen>
       });
   callRelativeDetails()async{
     relative =
-    await getRelativeDetails();
-  }
+    await getRelativeDetails();  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Stack(children: [
-          Padding(
-            padding: const EdgeInsets.all(28.0),
-            child: ListView(children: [
-              SizedBox(
-                height: 300.0,
+    return PickupLayout(
+      scaffold: Scaffold(
+          body: Form(
+            key: _formKey,
+            child: Stack(children: [
+              Padding(
+                padding: const EdgeInsets.all(28.0),
+                child: ListView(children: [
+                  SizedBox(
+                    height: 300.0,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: Material(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.0),
+                        elevation: 2.0,
+                        child: MaterialButton(
+                          onPressed: () async {
+                            await Permissions
+                                .cameraAndMicrophonePermissionsGranted()
+                                ? {
+                              // ignore: unnecessary_statements
+                              CallUtilsRelative.dial(
+                                relative: relative,
+                                context: this.context,
+                              )
+                            }
+                                : {};
+                          },
+                          minWidth: 200.0,
+                          height: 42.0,
+                          child: Text(
+                            'Make a call',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      )),
+                 // Padding(
+                  //                       padding: EdgeInsets.symmetric(vertical: 16.0),
+                  //                       child: Material(
+                  //                         color: Colors.white,
+                  //                         borderRadius: BorderRadius.circular(30.0),
+                  //                         elevation: 2.0,
+                  //                         child: MaterialButton(
+                  //                           onPressed: () {
+                  //                             Navigator.push(context,
+                  //                                 MaterialPageRoute(builder: (context) {
+                  //                               return JoinCall();
+                  //                             }));
+                  //                           },
+                  //                           minWidth: 200.0,
+                  //                           height: 42.0,
+                  //                           child: Text(
+                  //                             'Join a call',
+                  //                             style: TextStyle(color: Colors.black),
+                  //                           ),
+                  //                         ),
+                  //                       )),
+                ]),
               ),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    elevation: 2.0,
-                    child: MaterialButton(
-                      onPressed: () async {
-                        await Permissions
-                            .cameraAndMicrophonePermissionsGranted()
-                            ? {
-                          // ignore: unnecessary_statements
-                          CallUtilsRelative.dial(
-                            relative: relative,
-                            context: this.context,
-                          )
-                        }
-                            : {};
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: Text(
-                        'Make a call',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  )),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    elevation: 2.0,
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return JoinCall();
-                        }));
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: Text(
-                        'Join a call',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  )),
+              Positioned(
+                top: 35,
+                right: 8,
+                child: MaterialButton(
+                  onPressed: () {
+                    logOut();
+                  },
+                  child: Text(
+                    'Log Out',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
             ]),
           ),
-          Positioned(
-            top: 35,
-            right: 8,
-            child: MaterialButton(
-              onPressed: () {
-                logOut();
-              },
-              child: Text(
-                'Log Out',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ]),
       ),
     );
   }

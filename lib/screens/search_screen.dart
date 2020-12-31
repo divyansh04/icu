@@ -29,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
 
     _authMethods.getCurrentUser().then((FirebaseUser user) {
-      _authMethods.fetchAllotedPatients(user).then((List<User> list) {
+      _authMethods.fetchPatients(user).then((List<User> list) {
         setState(() {
           userList = list;
           sender = User(
@@ -128,6 +128,8 @@ class _SearchScreenState extends State<SearchScreen> {
           uid: suggestionList[index].uid,
           name: suggestionList[index].name,
           username: suggestionList[index].username,
+          relativeName: suggestionList[index].relativeName,
+          relativeUid: suggestionList[index].relativeUid,
         );
 
         return CustomTile(
