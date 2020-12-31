@@ -26,14 +26,25 @@ class _RelativeScreenState extends State<RelativeScreen>
   bool logout;
   UserProvider userProvider;
   PageController pageController;
+  DocumentSnapshot timing;
   TextEditingController code = TextEditingController();
   var _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<DocumentSnapshot> getTiming() => Firestore.instance
+          .collection('timing')
+          .document('5kQHLQvdFwFGnNfdIoJc')
+          .get()
+          .then((snaps) {
+        return snaps;
+      });
+  getTimings() async {
+    timing = await getTiming();
+  }
 
   @override
   void initState() {
     super.initState();
-
+    getTimings();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       userProvider = Provider.of<UserProvider>(context, listen: false);
       await userProvider.refreshUser();
@@ -89,10 +100,14 @@ class _RelativeScreenState extends State<RelativeScreen>
                       elevation: 2.0,
                       child: MaterialButton(
                         onPressed: () async {
-                          if ((11 <= DateTime.now().toLocal().hour.toInt() &&
-                                  DateTime.now().toLocal().hour.toInt() < 16) ||
-                              (19 <= DateTime.now().toLocal().hour.toInt() &&
-                                  DateTime.now().toLocal().hour.toInt() < 21)) {
+                          if ((timing['lowerDayHour'] <=
+                                      DateTime.now().toLocal().hour.toInt() &&
+                                  DateTime.now().toLocal().hour.toInt() <
+                                      timing['higherDayHour']) ||
+                              (timing['lowerNightHour'] <=
+                                      DateTime.now().toLocal().hour.toInt() &&
+                                  DateTime.now().toLocal().hour.toInt() <
+                                      timing['higherNightHour'])) {
                             await Permissions
                                     .cameraAndMicrophonePermissionsGranted()
                                 ? {
@@ -130,7 +145,7 @@ class _RelativeScreenState extends State<RelativeScreen>
                                               height: 20,
                                             ),
                                             Text(
-                                              "Calling hours: 11:00 PM-4:00PM  \n                          7:00PM-9:00PM",
+                                              "Calling hours: ${timing['lowerDayHour']}:00AM-${timing['higherDayHour']}:00PM  \n                          ${timing['lowerNightHour']}:00PM-${timing['higherNightHour']}:00PM",
                                               style: TextStyle(fontSize: 15),
                                             ),
                                             SizedBox(

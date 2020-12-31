@@ -337,7 +337,8 @@ class _CallScreenState extends State<CallScreen> {
               print(users);
               callMethods.endCall(
                   call:widget.call,user: users);
-              Navigator.pop(context);},
+              Navigator.pop(context);
+               },
             child: Icon(
               Icons.call_end,
               color: Colors.white,
