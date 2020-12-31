@@ -6,7 +6,6 @@ import 'package:icu/models/call.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
-import 'package:icu/screens/Join_Call_Screen.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:icu/utils/call_utilities_relative.dart';
 import 'package:icu/utils/permissions.dart';
@@ -56,91 +55,158 @@ class _RelativeScreenState extends State<RelativeScreen>
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
   }
+
   Future<DocumentSnapshot> getRelativeDetails() async =>
-      await Firestore.instance.collection('users').document(userProvider.getUser.uid).get().then((snaps) {
+      await Firestore.instance
+          .collection('users')
+          .document(userProvider.getUser.uid)
+          .get()
+          .then((snaps) {
         return snaps;
       });
-  callRelativeDetails()async{
-    relative =
-    await getRelativeDetails();  }
+  callRelativeDetails() async {
+    relative = await getRelativeDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PickupLayout(
       scaffold: Scaffold(
-          body: Form(
-            key: _formKey,
-            child: Stack(children: [
-              Padding(
-                padding: const EdgeInsets.all(28.0),
-                child: ListView(children: [
-                  SizedBox(
-                    height: 300.0,
-                  ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Material(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30.0),
-                        elevation: 2.0,
-                        child: MaterialButton(
-                          onPressed: () async {
+        body: Form(
+          key: _formKey,
+          child: Stack(children: [
+            Padding(
+              padding: const EdgeInsets.all(28.0),
+              child: ListView(children: [
+                SizedBox(
+                  height: 300.0,
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Material(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30.0),
+                      elevation: 2.0,
+                      child: MaterialButton(
+                        onPressed: () async {
+                          if ((11 <= DateTime.now().toLocal().hour.toInt() &&
+                                  DateTime.now().toLocal().hour.toInt() < 16) ||
+                              (19 <= DateTime.now().toLocal().hour.toInt() &&
+                                  DateTime.now().toLocal().hour.toInt() < 21)) {
                             await Permissions
-                                .cameraAndMicrophonePermissionsGranted()
+                                    .cameraAndMicrophonePermissionsGranted()
                                 ? {
-                              // ignore: unnecessary_statements
-                              CallUtilsRelative.dial(
-                                relative: relative,
-                                context: this.context,
-                              )
-                            }
+                                    // ignore: unnecessary_statements
+                                    CallUtilsRelative.dial(
+                                      relative: relative,
+                                      context: this.context,
+                                    )
+                                  }
                                 : {};
-                          },
-                          minWidth: 200.0,
-                          height: 42.0,
-                          child: Text(
-                            'Make a call',
-                            style: TextStyle(color: Colors.black),
-                          ),
+                          } else {
+                            showDialog(
+                                useRootNavigator: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            20.0)), //this right here
+                                    child: Container(
+                                      height: 200,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Can't call right now",
+                                              style: TextStyle(fontSize: 25),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Text(
+                                              "Calling hours: 2:00 PM-5:00PM  \n                          7:00PM-9:00PM",
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                RaisedButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    "Okay",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  color: Colors.red,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                          }
+                        },
+                        minWidth: 200.0,
+                        height: 42.0,
+                        child: Text(
+                          'Make a call',
+                          style: TextStyle(color: Colors.black),
                         ),
-                      )),
-                 // Padding(
-                  //                       padding: EdgeInsets.symmetric(vertical: 16.0),
-                  //                       child: Material(
-                  //                         color: Colors.white,
-                  //                         borderRadius: BorderRadius.circular(30.0),
-                  //                         elevation: 2.0,
-                  //                         child: MaterialButton(
-                  //                           onPressed: () {
-                  //                             Navigator.push(context,
-                  //                                 MaterialPageRoute(builder: (context) {
-                  //                               return JoinCall();
-                  //                             }));
-                  //                           },
-                  //                           minWidth: 200.0,
-                  //                           height: 42.0,
-                  //                           child: Text(
-                  //                             'Join a call',
-                  //                             style: TextStyle(color: Colors.black),
-                  //                           ),
-                  //                         ),
-                  //                       )),
-                ]),
-              ),
-              Positioned(
-                top: 35,
-                right: 8,
-                child: MaterialButton(
-                  onPressed: () {
-                    logOut();
-                  },
-                  child: Text(
-                    'Log Out',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                      ),
+                    )),
+                // Padding(
+                //                       padding: EdgeInsets.symmetric(vertical: 16.0),
+                //                       child: Material(
+                //                         color: Colors.white,
+                //                         borderRadius: BorderRadius.circular(30.0),
+                //                         elevation: 2.0,
+                //                         child: MaterialButton(
+                //                           onPressed: () {
+                //                             Navigator.push(context,
+                //                                 MaterialPageRoute(builder: (context) {
+                //                               return JoinCall();
+                //                             }));
+                //                           },
+                //                           minWidth: 200.0,
+                //                           height: 42.0,
+                //                           child: Text(
+                //                             'Join a call',
+                //                             style: TextStyle(color: Colors.black),
+                //                           ),
+                //                         ),
+                //                       )),
+              ]),
+            ),
+            Positioned(
+              top: 35,
+              right: 8,
+              child: MaterialButton(
+                onPressed: () {
+                  logOut();
+                },
+                child: Text(
+                  'Log Out',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-            ]),
-          ),
+            ),
+          ]),
+        ),
       ),
     );
   }
