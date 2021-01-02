@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:image/image.dart' as Im;
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Utils {
@@ -17,13 +14,6 @@ class Utils {
     String firstNameInitial = nameSplit[0][0];
     String lastNameInitial=nameSplit[0][1];
     return firstNameInitial + lastNameInitial;
-  }
-
-  // this is new
-
-  static Future<File> pickImage({@required ImageSource source}) async {
-    File selectedImage = await ImagePicker.pickImage(source: source);
-    return await compressImage(selectedImage);
   }
 
   static Future<File> compressImage(File imageToCompress) async {

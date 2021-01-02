@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icu/constants/strings.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/utils/utilities.dart';
@@ -9,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore firestore = Firestore.instance;
   Firestore _fireStore = Firestore.instance;
   static final CollectionReference _userCollection =
@@ -41,33 +39,6 @@ class AuthMethods {
           await _userCollection.document(id).get();
       return User.fromMap(documentSnapshot.data);
     } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
-  Future<FirebaseUser> signInWithGoogle() async {
-    try {
-      GoogleSignInAccount _signInAccount = await _googleSignIn.signIn();
-      GoogleSignInAuthentication _signInAuthentication =
-          await _signInAccount.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-          accessToken: _signInAuthentication.accessToken,
-          idToken: _signInAuthentication.idToken);
-
-      FirebaseUser user = await _auth.signInWithCredential(credential);
-      Fluttertoast.showToast(
-          msg: 'Signed in Successfully',
-          textColor: Colors.black,
-          backgroundColor: Colors.white);
-      return user;
-    } catch (e) {
-      Fluttertoast.showToast(
-          msg: 'Signed in Failed',
-          textColor: Colors.black,
-          backgroundColor: Colors.white);
-      print("Auth methods error");
       print(e);
       return null;
     }
