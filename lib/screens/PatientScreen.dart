@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout_patient.dart';
+import 'package:icu/utils/universal_variables.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'login_screen.dart';
@@ -28,7 +29,6 @@ class _PatientScreenState extends State<PatientScreen>
       userProvider = Provider.of<UserProvider>(context, listen: false);
       await userProvider.refreshUser();
 
-
       LogRepository.init(
         isHive: true,
         dbName: userProvider.getUser.uid,
@@ -50,27 +50,42 @@ class _PatientScreenState extends State<PatientScreen>
   Widget build(BuildContext context) {
     return PickupLayoutPatient(
       scaffold: Scaffold(
-        body: Stack(children: [
-          Center(
-            child: Text(
-              "You'll be fine Soon..",
-              style: TextStyle(color: Colors.white,fontSize: 26),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                UniversalVariables.gradientColorStart,
+                UniversalVariables.gradientColorEnd,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
             ),
           ),
-          Positioned(
-            top: 35,
-            right: 8,
-            child: FlatButton(
+          child: Stack(children: [
+            Container(
+              color: UniversalVariables.blackColor.withOpacity(0.5),
+            ),
+            Center(
               child: Text(
-                'logOut',
-                style: TextStyle(color: Colors.white),
+                "You'll be fine Soon..",
+                style: TextStyle(color: Colors.white, fontSize: 26),
               ),
-              onPressed: () {
-                logOut();
-              },
             ),
-          ),
-        ]),
+            Positioned(
+              top: 35,
+              right: 8,
+              child: FlatButton(
+                child: Text(
+                  'logOut',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  logOut();
+                },
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }
@@ -78,13 +93,19 @@ class _PatientScreenState extends State<PatientScreen>
   logOut() async {
     try {
       await _auth.signOut();
-      Fluttertoast.showToast(msg: 'Logged out Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Logged out Successfully',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LoginScreen();
       }));
     } catch (e) {
       Navigator.pop(context);
-      Fluttertoast.showToast(msg: 'Log out Failed',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Log out Failed',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       print(e);
     }
   }
