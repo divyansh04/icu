@@ -9,7 +9,7 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/home_screen.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/screens/search_screen.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -59,22 +59,9 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool doctor;
   bool patient;
   bool loading;
-  FirebaseMessaging messaging = FirebaseMessaging();
   @override
   void initState() {
     initialWork();
-    messaging.configure(
-      onLaunch: (Map<String, dynamic> event) {
-        return null;
-      },
-      onResume: (Map<String, dynamic> event) {
-        return null;
-      },
-      onMessage: (Map<String, dynamic> event) {
-        return null;
-      },
-    );
-    messaging.getToken().then((value) => {print(value)});
     super.initState();
   }
 

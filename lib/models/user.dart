@@ -8,6 +8,7 @@ class User {
   String relativeUid;
   String patientName;
   String patientUid;
+  String fcmToken;
 
   User({
     this.patientName,
@@ -19,6 +20,7 @@ class User {
     this.email,
     this.username,
     this.userRole,
+    this.fcmToken
   });
 
   Map toMap(User user) {
@@ -32,6 +34,7 @@ class User {
     data['relativeUid'] = user.relativeUid;
     data['patientName'] = user.patientName;
     data['patientUid'] = user.patientUid;
+    data['fcmToken'] = user.fcmToken;
     return data;
   }
 
@@ -46,5 +49,6 @@ class User {
     this.relativeUid=mapData['relativeUid'];
     this.patientName=mapData['patientName'];
     this.patientUid=mapData['patientUid'];
+    this.fcmToken=mapData['fcmToken'];
   }
 }

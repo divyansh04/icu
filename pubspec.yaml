@@ -67,6 +67,10 @@ dependencies:
   # Cloud Messaging
   firebase_messaging: ^6.0.12
 
+  # Local Notifications
+  flutter_local_notifications: ^3.0.2
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -110,7 +110,7 @@ class AuthMethods {
     return currentUser['userRole'] == 'patient' ? true : false;
   }
 
-  Future<void> addDataToDb(FirebaseUser currentUser) async {
+  Future<void> addDataToDb(FirebaseUser currentUser,String fcmToken) async {
     String username = Utils.getUsername(currentUser.email);
     User user = User(
       uid: currentUser.uid,
@@ -118,9 +118,11 @@ class AuthMethods {
       name: currentUser.displayName,
       username: username,
       userRole: '',
+      fcmToken: fcmToken,
     );
 
     firestore
+    
         .collection(USERS_COLLECTION)
         .document(currentUser.uid)
         .setData(user.toMap(user));

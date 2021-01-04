@@ -6,6 +6,7 @@ import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/tabBarWidgets/forgotPassord.dart';
 import 'package:icu/utils/universal_variables.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,9 +17,31 @@ class _LoginScreenState extends State<LoginScreen> {
   var _formKey = GlobalKey<FormState>();
   bool hide = true;
   bool isLoginPressed = false;
+  String fcmToken;
   final AuthMethods _authMethods = AuthMethods();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  FirebaseMessaging messaging = FirebaseMessaging();
+  @override
+  void initState() {
+    messaging.configure(
+      onLaunch: (Map<String, dynamic> event) {
+        return null;
+      },
+      onResume: (Map<String, dynamic> event) {
+        return null;
+      },
+      onMessage: (Map<String, dynamic> event) {
+        return null;
+      },
+    );
+    messaging.getToken().then((value) => {
+      setState((){
+       fcmToken=value.toString();
+    }),
+      print(value)});
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -196,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       if (isNewUser) {
-        _authMethods.addDataToDb(user).then((value) {
+        _authMethods.addDataToDb(user,fcmToken).then((value) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
                 return HomeWidget();
