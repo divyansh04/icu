@@ -9,6 +9,7 @@ import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:icu/utils/call_utilities_relative.dart';
 import 'package:icu/utils/permissions.dart';
+import 'package:icu/utils/universal_variables.dart';
 import 'package:provider/provider.dart';
 import 'login_screen.dart';
 import 'package:flutter/scheduler.dart';
@@ -83,144 +84,201 @@ class _RelativeScreenState extends State<RelativeScreen>
   Widget build(BuildContext context) {
     return PickupLayout(
       scaffold: Scaffold(
-        body: Form(
-          key: _formKey,
-          child: Stack(children: [
-            Padding(
-              padding: const EdgeInsets.all(28.0),
-              child: ListView(children: [
-                SizedBox(
-                  height: 300.0,
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30.0),
-                      elevation: 2.0,
-                      child: MaterialButton(
-                        onPressed: () async {
-                          if ((timing['lowerDayHour'] <=
-                                      DateTime.now().toLocal().hour.toInt() &&
-                                  DateTime.now().toLocal().hour.toInt() <
-                                      timing['higherDayHour']) ||
-                              (timing['lowerNightHour'] <=
-                                      DateTime.now().toLocal().hour.toInt() &&
-                                  DateTime.now().toLocal().hour.toInt() <
-                                      timing['higherNightHour'])) {
-                            await Permissions
-                                    .cameraAndMicrophonePermissionsGranted()
-                                ? {
-                                    // ignore: unnecessary_statements
-                                    CallUtilsRelative.dial(
-                                      relative: relative,
-                                      context: this.context,
-                                    )
-                                  }
-                                : {};
-                          } else {
-                            showDialog(
-                                useRootNavigator: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            20.0)), //this right here
-                                    child: Container(
-                                      height: 200,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "Can't call right now",
-                                              style: TextStyle(fontSize: 25),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text(
-                                              "Calling hours: ${timing['lowerDayHour']}:00AM-${timing['higherDayHour']}:00PM  \n                          ${timing['lowerNightHour']}:00PM-${timing['higherNightHour']}:00PM",
-                                              style: TextStyle(fontSize: 15),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                RaisedButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text(
-                                                    "Okay",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  color: Colors.red,
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                });
-                          }
-                        },
-                        minWidth: 200.0,
-                        height: 42.0,
-                        child: Text(
-                          'Make a call',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    )),
-                // Padding(
-                //                       padding: EdgeInsets.symmetric(vertical: 16.0),
-                //                       child: Material(
-                //                         color: Colors.white,
-                //                         borderRadius: BorderRadius.circular(30.0),
-                //                         elevation: 2.0,
-                //                         child: MaterialButton(
-                //                           onPressed: () {
-                //                             Navigator.push(context,
-                //                                 MaterialPageRoute(builder: (context) {
-                //                               return JoinCall();
-                //                             }));
-                //                           },
-                //                           minWidth: 200.0,
-                //                           height: 42.0,
-                //                           child: Text(
-                //                             'Join a call',
-                //                             style: TextStyle(color: Colors.black),
-                //                           ),
-                //                         ),
-                //                       )),
-              ]),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                UniversalVariables.gradientColorStart,
+                UniversalVariables.gradientColorEnd,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
             ),
-            Positioned(
-              top: 35,
-              right: 8,
-              child: MaterialButton(
-                onPressed: () {
-                  logOut();
-                },
-                child: Text(
-                  'Log Out',
-                  style: TextStyle(color: Colors.white),
+          ),
+          child: Form(
+            key: _formKey,
+            child: Stack(children: [
+              Container(
+                color: UniversalVariables.blackColor.withOpacity(0.5),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(28.0),
+                child: Center(
+                  child: ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        Text(
+                          "You'll be able to connect soon !",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 26),
+                        ),
+                        SizedBox(height: 20.0),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Container(
+                            height: 50.0,
+                            child: RaisedButton(
+                              elevation: 2.0,
+                              onPressed: () async {
+                                if ((timing['lowerDayHour'] <=
+                                            DateTime.now()
+                                                .toLocal()
+                                                .hour
+                                                .toInt() &&
+                                        DateTime.now().toLocal().hour.toInt() <
+                                            timing['higherDayHour']) ||
+                                    (timing['lowerNightHour'] <=
+                                            DateTime.now()
+                                                .toLocal()
+                                                .hour
+                                                .toInt() &&
+                                        DateTime.now().toLocal().hour.toInt() <
+                                            timing['higherNightHour'])) {
+                                  await Permissions
+                                          .cameraAndMicrophonePermissionsGranted()
+                                      ? {
+                                          // ignore: unnecessary_statements
+                                          CallUtilsRelative.dial(
+                                            relative: relative,
+                                            context: this.context,
+                                          )
+                                        }
+                                      : {};
+                                } else {
+                                  showDialog(
+                                      useRootNavigator: false,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      20.0)), //this right here
+                                          child: Container(
+                                            height: 200,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Can't call right now",
+                                                    style:
+                                                        TextStyle(fontSize: 25),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "Calling hours: ${timing['lowerDayHour']}:00AM-${timing['higherDayHour']}:00PM  \n                          ${timing['lowerNightHour']}:00PM-${timing['higherNightHour']}:00PM",
+                                                    style:
+                                                        TextStyle(fontSize: 15),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      RaisedButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text(
+                                                          "Okay",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                        color: Colors.red,
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                }
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(80.0)),
+                              padding: EdgeInsets.all(0.0),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        UniversalVariables.gradientColorStart,
+                                        UniversalVariables.gradientColorEnd
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: Container(
+                                  constraints: BoxConstraints(minHeight: 50.0),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Make a call",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Padding(
+                        //                       padding: EdgeInsets.symmetric(vertical: 16.0),
+                        //                       child: Material(
+                        //                         color: Colors.white,
+                        //                         borderRadius: BorderRadius.circular(30.0),
+                        //                         elevation: 2.0,
+                        //                         child: MaterialButton(
+                        //                           onPressed: () {
+                        //                             Navigator.push(context,
+                        //                                 MaterialPageRoute(builder: (context) {
+                        //                               return JoinCall();
+                        //                             }));
+                        //                           },
+                        //                           minWidth: 200.0,
+                        //                           height: 42.0,
+                        //                           child: Text(
+                        //                             'Join a call',
+                        //                             style: TextStyle(color: Colors.black),
+                        //                           ),
+                        //                         ),
+                        //                       )),
+                      ]),
                 ),
               ),
-            ),
-          ]),
+              Positioned(
+                top: 35,
+                right: 8,
+                child: MaterialButton(
+                  onPressed: () {
+                    logOut();
+                  },
+                  child: Text(
+                    'Log Out',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ]),
+          ),
         ),
       ),
     );
