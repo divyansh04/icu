@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/screens/PatientScreen.dart';
 import 'package:icu/screens/RelativeScreen.dart';
+import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:icu/provider/image_upload_provider.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/home_screen.dart';
@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
@@ -34,7 +33,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           '/search_screen': (context) => SearchScreen(),
         },
-        theme: ThemeData(brightness: Brightness.dark),
+        theme: ThemeData(brightness: Brightness.light),
         home: FutureBuilder(
           future: _authMethods.getCurrentUser(),
           builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
@@ -85,7 +84,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Center(child: CircularProgressIndicator())
+        ? CustomisedProgressIndicator()
         : doctor
             ? HomeScreen()
             : patient

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/constants/UIconstants.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -210,7 +210,7 @@ class _SearchScreenState extends State<SearchScreen> {
           title: Text(
             searchedUser.name,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),

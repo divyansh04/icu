@@ -8,6 +8,7 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/tabBarWidgets/forgotPassword.dart';
 import 'package:icu/utils/universal_variables.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -51,9 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
           SystemNavigator.pop();
         },
         child: isLoginPressed
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
+            ? CustomisedProgressIndicator()
             : Scaffold(
                 backgroundColor: Colors.white,
                 body: Container(
