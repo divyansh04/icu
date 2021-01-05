@@ -56,6 +56,7 @@ class _PickupScreenState extends State<PickupScreen> {
           children: <Widget>[
             SizedBox(height: 50),
             Expanded(
+              flex: 1,
               child: Text(
                 "Incoming...",
                 style: TextStyle(
@@ -63,18 +64,27 @@ class _PickupScreenState extends State<PickupScreen> {
                 ),
               ),
             ),
-
             Expanded(
-              child: Text(
-                widget.call.doctorName,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+              flex: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CircleAvatar(
+                    radius: 130,
+                    backgroundImage: AssetImage('assets/doctor.jpg'),
+                  ),
+                  Text(
+                    '${widget.call.doctorName} is calling you....',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 75),
             Expanded(
+              flex: 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
