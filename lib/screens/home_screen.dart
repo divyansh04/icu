@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:icu/screens/search_screen.dart';
+import 'package:icu/screens/Doctorscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       child: PickupLayout(
         scaffold: Scaffold(
           backgroundColor: UniversalVariables.blackColor,
-          body:SearchScreen(),
+          body:DoctorScreen(),
         ),
       ),
     );

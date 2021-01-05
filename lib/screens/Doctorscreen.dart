@@ -1,51 +1,74 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/resources/auth_methods.dart';
-import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/utils/call_utilities.dart';
 import 'package:icu/utils/permissions.dart';
 import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/widgets/CustomAppBar.dart';
+import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:icu/widgets/custom_tile.dart';
 
-class SearchScreen extends StatefulWidget {
+class DoctorScreen extends StatefulWidget {
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _DoctorScreenState createState() => _DoctorScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _DoctorScreenState extends State<DoctorScreen> {
   final AuthMethods _authMethods = AuthMethods();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User sender;
-  List<User> userList;
+  bool loading = false;
+  List<User> userList=null;
   String query = "";
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
+    getUsersList();
     super.initState();
-    _authMethods.getUserDetails().then((value) =>
-    _authMethods.getCurrentUser().then((FirebaseUser user) {
-      _authMethods.fetchPatients(user).then((List<User> list) {
-        setState(() {
-          userList = list;
-          sender = User(
-            uid: user.uid.toString(),
-            name: value.name,
-          );
-        });
+  }
+
+  getUsersList() async {
+    setState(() {
+      loading = true;
+    });
+    try {
+      await _authMethods.getUserDetails().then(
+          (value) => _authMethods.getCurrentUser().then((FirebaseUser user) {
+                _authMethods.fetchPatients(user).then((List<User> list) {
+                  setState(() {
+                    userList = list;
+                    sender = User(
+                      uid: user.uid.toString(),
+                      name: value.name,
+                    );
+                    userList.toList().sort((a, b) => a.name.compareTo(b.name));
+                  });
+                });
+              }));
+      setState(() {
+        loading = false;
       });
-    }));
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(
+          msg: 'please check internet connection!!',
+          backgroundColor: Colors.black,
+          textColor: Colors.white);
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   searchAppBar(BuildContext context) {
-    return GradientAppBar(
-      centerTitle: true,
+    return CustomAppBar(
+      showGradient: true,
       title: Text('Doctor Portal'),
-      actions:[
+      actions: [
         MaterialButton(
           onPressed: () {
             logOut();
@@ -56,13 +79,8 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ],
-            gradient: LinearGradient(
-        colors: [
-          UniversalVariables.gradientColorStart,
-          UniversalVariables.gradientColorEnd,
-        ],
-      ),
-      elevation: 0,
+      leading: null,
+      centerTitle: true,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight + 20),
         child: Padding(
@@ -105,7 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   buildSuggestions(String query) {
     final List<User> suggestionList = query.isEmpty
-        ? []
+        ? userList
         : userList != null
             ? userList.where((User user) {
                 String _getUsername = user.username.toLowerCase();
@@ -202,11 +220,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 });
           },
-
           leading: CircleAvatar(
-             backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4'),
-             backgroundColor: Colors.grey,
-           ),
+            backgroundImage: NetworkImage(
+                'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4'),
+            backgroundColor: Colors.grey,
+          ),
           title: Text(
             searchedUser.name,
             style: TextStyle(
@@ -225,27 +243,32 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PickupLayout(
-      scaffold: Scaffold(
-        backgroundColor: Colors.white,//UniversalVariables.blackColor,
-        appBar: searchAppBar(context),
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: buildSuggestions(query),
-        ),
+    return Scaffold(
+      backgroundColor: Colors.white, //UniversalVariables.blackColor,
+      appBar: searchAppBar(context),
+      body: userList==null?CustomisedProgressIndicator():Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: buildSuggestions(query),
       ),
     );
   }
+
   logOut() async {
     try {
       await _auth.signOut();
-      Fluttertoast.showToast(msg: 'Logged out Successfully',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Logged out Successfully',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LoginScreen();
       }));
     } catch (e) {
       Navigator.pop(context);
-      Fluttertoast.showToast(msg: 'Log out Failed',textColor: Colors.black,backgroundColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: 'Log out Failed',
+          textColor: Colors.black,
+          backgroundColor: Colors.white);
       print(e);
     }
   }

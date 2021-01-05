@@ -10,7 +10,7 @@ import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/home_screen.dart';
 import 'package:icu/screens/login_screen.dart';
-import 'package:icu/screens/search_screen.dart';
+import 'package:icu/screens/Doctorscreen.dart';
 
 
 void main() => runApp(MyApp());
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/search_screen': (context) => SearchScreen(),
+          '/search_screen': (context) => DoctorScreen(),
         },
         theme: ThemeData(brightness: Brightness.light),
         home: FutureBuilder(
@@ -60,6 +60,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool doctor;
   bool patient;
   bool loading;
+  Widget initialScreen;
   @override
   void initState() {
     initialWork();
@@ -81,6 +82,11 @@ class _HomeWidgetState extends State<HomeWidget> {
     setState(() {
       loading = false;
     });
+    doctor
+        ? initialScreen = HomeScreen()
+        : patient
+        ? initialScreen = PatientScreen()
+        : initialScreen = RelativeScreen();
   }
 
   @override
@@ -105,10 +111,6 @@ class _HomeWidgetState extends State<HomeWidget> {
 
     ),
         )
-        : doctor
-            ? HomeScreen()
-            : patient
-                ? PatientScreen()
-                : RelativeScreen();
+        : initialScreen;
   }
 }
