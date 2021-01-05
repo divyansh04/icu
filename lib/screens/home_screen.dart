@@ -6,7 +6,6 @@ import 'package:icu/screens/Doctorscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
-import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:icu/utils/universal_variables.dart';
 
 class  HomeScreen extends StatefulWidget {
@@ -50,12 +49,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       onWillPop: (){
         SystemNavigator.pop();
       },
-      child: PickupLayout(
-        scaffold: Scaffold(
+      child: Scaffold(
           backgroundColor: UniversalVariables.blackColor,
           body:DoctorScreen(),
         ),
-      ),
     );
   }
 }
