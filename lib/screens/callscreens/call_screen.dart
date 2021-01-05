@@ -249,55 +249,6 @@ class _CallScreenState extends State<CallScreen> {
     return Container();
   }
 
-  /// Info panel to show logs
-  Widget _panel() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      alignment: Alignment.bottomCenter,
-      child: FractionallySizedBox(
-        heightFactor: 0.5,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 48),
-          child: ListView.builder(
-            reverse: true,
-            itemCount: _infoStrings.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (_infoStrings.isEmpty) {
-                return null;
-              }
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 3,
-                  horizontal: 10,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          _infoStrings[index],
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
 
   void _onToggleMute() {
     setState(() {
@@ -335,9 +286,16 @@ class _CallScreenState extends State<CallScreen> {
               await checkActiveUsers();
               int users=activeUsers-1;
               print(users);
-              callMethods.endCall(
-                  call:widget.call,user: users);
-              Navigator.pop(context);
+              if(activeUsers==1){
+                callMethods.endPatientCall(
+                    call:widget.call);
+              }
+              else{
+                callMethods.endCall(
+                    call:widget.call,user: users);
+                Navigator.pop((context));
+              }
+
                },
             child: Icon(
               Icons.call_end,
@@ -385,7 +343,6 @@ class _CallScreenState extends State<CallScreen> {
         child: Stack(
           children: <Widget>[
             _viewRows(),
-            _panel(),
             _toolbar(),
           ],
         ),

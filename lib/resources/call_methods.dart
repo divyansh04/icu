@@ -86,10 +86,10 @@ class CallMethods {
       return false;
     }
   }
-  Future<bool> endRelativeInitiatedCall({Call call,user}) async {
+  Future<bool> endRelativeInitiatedCall({Call call}) async {
     try {
-      await callCollection.document(call.relativeId).updateData({'users':user});
-      await callCollection.document(call.patientId).updateData({'users':user});
+      await callCollection.document(call.relativeId).delete();
+      await callCollection.document(call.patientId).delete();
       return true;
     } catch (e) {
       print(e);
