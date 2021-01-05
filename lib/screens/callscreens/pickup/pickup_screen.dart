@@ -47,62 +47,77 @@ class _PickupScreenState extends State<PickupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white70,
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 100),
+        padding: EdgeInsets.symmetric(vertical: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              "Incoming...",
-              style: TextStyle(
-                fontSize: 30,
+            SizedBox(height: 50),
+            Expanded(
+              child: Text(
+                "Incoming...",
+                style: TextStyle(
+                  fontSize: 30,
+                ),
               ),
             ),
-            SizedBox(height: 50),
-            Text(
-              widget.call.patientName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
+
+            Expanded(
+              child: Text(
+                widget.call.doctorName,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
             ),
             SizedBox(height: 75),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.call_end),
-                  color: Colors.redAccent,
-                  onPressed: () async {
-                    isCallMissed = false;
-                    addToLocalStorage(callStatus: CALL_STATUS_RECEIVED);
-                    await callMethods.endRelativeIncomingCall(call: widget.call);
-                  },
-                ),
-                SizedBox(width: 25),
-                IconButton(
-                    icon: Icon(Icons.call),
-                    color: Colors.green,
-                    onPressed: () async {
-                      int users=widget.call.users.toInt()+1;
-                      print(users);
-                      callMethods.joinCall(
-                          call:widget.call,user: users);
-                      isCallMissed = false;
-                      addToLocalStorage(callStatus: CALL_STATUS_RECEIVED);
-                      await Permissions.cameraAndMicrophonePermissionsGranted()
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CallScreen(call: widget.call),
-                              ),
-                            )
-                          // ignore: unnecessary_statements
-                          : {};
-                    }),
-              ],
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: Icon(Icons.call_end,size: 30,),
+                      color: Colors.redAccent,
+                      onPressed: () async {
+                        isCallMissed = false;
+                        addToLocalStorage(callStatus: CALL_STATUS_RECEIVED);
+                        await callMethods.endRelativeIncomingCall(call: widget.call);
+                      },
+                    ),
+                  ),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                        icon: Icon(Icons.call,size: 30,),
+                        color: Colors.green,
+                        onPressed: () async {
+                          int users=widget.call.users.toInt()+1;
+                          print(users);
+                          callMethods.joinCall(
+                              call:widget.call,user: users);
+                          isCallMissed = false;
+                          addToLocalStorage(callStatus: CALL_STATUS_RECEIVED);
+                          await Permissions.cameraAndMicrophonePermissionsGranted()
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CallScreen(call: widget.call),
+                                  ),
+                                )
+                              // ignore: unnecessary_statements
+                              : {};
+                        }),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -27,18 +27,18 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-
+    _authMethods.getUserDetails().then((value) =>
     _authMethods.getCurrentUser().then((FirebaseUser user) {
       _authMethods.fetchPatients(user).then((List<User> list) {
         setState(() {
           userList = list;
           sender = User(
             uid: user.uid.toString(),
-            name: user.displayName,
+            name: value.name,
           );
         });
       });
-    });
+    }));
   }
 
   searchAppBar(BuildContext context) {

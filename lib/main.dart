@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/screens/PatientScreen.dart';
 import 'package:icu/screens/RelativeScreen.dart';
+import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/auth_methods.dart';
@@ -84,7 +86,25 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? CustomisedProgressIndicator()
+        ? ModalProgressHUD(
+      inAsyncCall: loading,
+          progressIndicator: CustomisedProgressIndicator(),
+          child: Scaffold(
+            body: Container(
+                decoration: BoxDecoration(
+            gradient: LinearGradient(
+            colors: [
+            UniversalVariables.gradientColorStart,
+              UniversalVariables.gradientColorEnd
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+            ),
+
+    ),
+        )
         : doctor
             ? HomeScreen()
             : patient
