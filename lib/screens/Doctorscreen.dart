@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:icu/models/call.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/resources/auth_methods.dart';
+import 'package:icu/screens/callscreens/call_screen.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/utils/call_utilities.dart';
 import 'package:icu/utils/permissions.dart';
@@ -10,6 +13,7 @@ import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/widgets/CustomAppBar.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:icu/widgets/custom_tile.dart';
+import 'package:icu/resources/call_methods.dart';
 
 class DoctorScreen extends StatefulWidget {
   @override
@@ -21,10 +25,13 @@ class _DoctorScreenState extends State<DoctorScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User sender;
   bool loading = false;
-  List<User> userList=null;
+  List<User> userList = null;
   String query = "";
+  Stream snapshot = null;
+  Call call;
+  FirebaseUser currentUser;
+  CallMethods callMethods = CallMethods();
   TextEditingController searchController = TextEditingController();
-
   @override
   void initState() {
     getUsersList();
@@ -38,6 +45,9 @@ class _DoctorScreenState extends State<DoctorScreen> {
     try {
       await _authMethods.getUserDetails().then(
           (value) => _authMethods.getCurrentUser().then((FirebaseUser user) {
+                setState(() {
+                  currentUser = user;
+                });
                 _authMethods.fetchPatients(user).then((List<User> list) {
                   setState(() {
                     userList = list;
@@ -61,6 +71,44 @@ class _DoctorScreenState extends State<DoctorScreen> {
       setState(() {
         loading = false;
       });
+    }
+  }
+
+  joinCall() async {
+    int users =  call.users.toInt() + 1;
+    await callMethods.joinCall(call: call, user: users);
+    Navigator.pop(context);
+    await Permissions.cameraAndMicrophonePermissionsGranted()
+        ? Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CallScreen(call: call),
+            ))
+        : {};
+  }
+  makeCall(User searchedUser)async{
+    Navigator.pop(context);
+    await CallUtils.dial(
+    from: sender,
+    to: searchedUser,
+    context: this.context,
+    );
+  }
+
+  Future<bool> isCallRunning(User searchedUser) async {
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('call')
+        .document(currentUser.uid)
+        .get();
+    if (snapshot.data != null) {
+      call = Call.fromMap(snapshot.data);
+      if (call.patientId == searchedUser.uid) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
@@ -193,15 +241,11 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                 RaisedButton(
                                   elevation: 2.5,
                                   onPressed: () async {
+                                    bool running =await isCallRunning(searchedUser);
                                     await Permissions
                                             .cameraAndMicrophonePermissionsGranted()
-                                        ? {
-                                            Navigator.pop(context),
-                                            CallUtils.dial(
-                                              from: sender,
-                                              to: searchedUser,
-                                              context: this.context,
-                                            )
+                                        ? {running?joinCall():
+                                        makeCall(searchedUser)
                                           }
                                         : {};
                                   },
@@ -246,10 +290,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
     return Scaffold(
       backgroundColor: Colors.white, //UniversalVariables.blackColor,
       appBar: searchAppBar(context),
-      body: userList==null?CustomisedProgressIndicator():Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: buildSuggestions(query),
-      ),
+      body: userList == null
+          ? CustomisedProgressIndicator()
+          : Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: buildSuggestions(query),
+            ),
     );
   }
 
