@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/screens/PatientScreen.dart';
 import 'package:icu/screens/RelativeScreen.dart';
+import 'package:icu/screens/admin_panel/add_doctor.dart';
+import 'package:icu/screens/admin_panel/admin_panel.dart';
+import 'package:icu/screens/admin_panel/doctor_services.dart';
 import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -31,21 +34,23 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: "icu",
         debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/search_screen': (context) => DoctorScreen(),
-        },
+        // initialRoute: '/',
+        // routes: {
+        //   '/search_screen': (context) => DoctorScreen(),
+        // },
         theme: ThemeData(brightness: Brightness.light),
-        home: FutureBuilder(
-          future: _authMethods.getCurrentUser(),
-          builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-            if (snapshot.hasData) {
-              return HomeWidget();
-            } else {
-              return LoginScreen();
-            }
-          },
-        ),
+
+        home: AddDoctor(),
+        // FutureBuilder(
+        //   future: _authMethods.getCurrentUser(),
+        //   builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+        //     if (snapshot.hasData) {
+        //       return HomeWidget();
+        //     } else {
+        //       return LoginScreen();
+        //     }
+        //   },
+        // ),
       ),
     );
   }
@@ -55,7 +60,6 @@ class HomeWidget extends StatefulWidget {
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
-
 class _HomeWidgetState extends State<HomeWidget> {
   bool doctor;
   bool patient;
