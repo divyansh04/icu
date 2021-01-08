@@ -102,6 +102,12 @@ class AuthMethods {
     print(currentUser['userRole']);
     return currentUser['userRole'] == 'doctor' ? true : false;
   }
+  Future<bool> isAdmin(String id) async {
+    DocumentSnapshot currentUser =
+    await _fireStore.collection('users').document(id).get();
+    print(currentUser['userRole']);
+    return currentUser['userRole'] == 'admin' ? true : false;
+  }
 
   Future<bool> isPatient(String id) async {
     DocumentSnapshot currentUser =

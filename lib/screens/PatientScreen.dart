@@ -6,9 +6,11 @@ import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout_patient.dart';
 import 'package:icu/utils/universal_variables.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'login_screen.dart';
+
 
 class PatientScreen extends StatefulWidget {
   @override
@@ -24,7 +26,7 @@ class _PatientScreenState extends State<PatientScreen>
   @override
   void initState() {
     super.initState();
-
+    requestPermissions();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       userProvider = Provider.of<UserProvider>(context, listen: false);
       await userProvider.refreshUser();
@@ -38,6 +40,13 @@ class _PatientScreenState extends State<PatientScreen>
     WidgetsBinding.instance.addObserver(this);
 
     pageController = PageController();
+  }
+  requestPermissions() async {
+    await PermissionHandler().requestPermissions([
+      PermissionGroup.storage,
+      PermissionGroup.photos,
+      PermissionGroup.microphone,
+    ]);
   }
 
   @override

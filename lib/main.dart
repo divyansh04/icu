@@ -12,41 +12,43 @@ import 'package:icu/screens/home_screen.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/screens/Doctorscreen.dart';
 
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final AuthMethods _authMethods = AuthMethods();
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
         title: "icu",
-        debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
           '/search_screen': (context) => DoctorScreen(),
         },
         theme: ThemeData(brightness: Brightness.light),
-        home: FutureBuilder(
-          future: _authMethods.getCurrentUser(),
-          builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-            if (snapshot.hasData) {
-              return HomeWidget();
-            } else {
-              return LoginScreen();
-            }
-          },
-        ),
-      ),
+        debugShowCheckedModeBanner: false,
+        home: MaterialClass(),
+      )));
+}
+
+class MaterialClass extends StatefulWidget {
+  @override
+  _MaterialClassState createState() => _MaterialClassState();
+}
+
+AuthMethods _authMethods = AuthMethods();
+
+class _MaterialClassState extends State<MaterialClass> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _authMethods.getCurrentUser(),
+      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (snapshot.hasData) {
+          return HomeWidget();
+        } else {
+          return LoginScreen();
+        }
+      },
     );
   }
 }
@@ -85,32 +87,30 @@ class _HomeWidgetState extends State<HomeWidget> {
     doctor
         ? initialScreen = HomeScreen()
         : patient
-        ? initialScreen = PatientScreen()
-        : initialScreen = RelativeScreen();
+            ? initialScreen = PatientScreen()
+            : initialScreen = RelativeScreen();
   }
 
   @override
   Widget build(BuildContext context) {
     return loading
         ? ModalProgressHUD(
-      inAsyncCall: loading,
-          progressIndicator: CustomisedProgressIndicator(),
-          child: Scaffold(
-            body: Container(
-                decoration: BoxDecoration(
-            gradient: LinearGradient(
-            colors: [
-            UniversalVariables.gradientColorStart,
-              UniversalVariables.gradientColorEnd
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+            inAsyncCall: loading,
+            progressIndicator: CustomisedProgressIndicator(),
+            child: Scaffold(
+              body: Container(
+                  decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    UniversalVariables.gradientColorStart,
+                    UniversalVariables.gradientColorEnd
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+              )),
             ),
-          ),
-            ),
-
-    ),
-        )
+          )
         : initialScreen;
   }
 }

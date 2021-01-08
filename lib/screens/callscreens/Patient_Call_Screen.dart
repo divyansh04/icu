@@ -30,6 +30,7 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
   final _infoStrings = <String>[];
   bool muted = false;
   int activeUsers;
+  String path;
   Future<DocumentSnapshot> getUsers() =>
       Firestore.instance.collection('call').document(widget.call.patientId).get().then((snaps) {
         return snaps;
@@ -43,11 +44,12 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
     callMethods.endPatientCall(call: widget.call);
   }
   }
+
   @override
   void initState() {
     super.initState();
     addPostFrameCallback();
-   timer=Timer.periodic(Duration(seconds: 2),(Timer t)=>checkActiveUsers());
+   //timer=Timer.periodic(Duration(seconds: 2),(Timer t)=>checkActiveUsers());
     initializeAgora();
   }
 
@@ -319,7 +321,7 @@ class _PatientCallScreenState extends State<PatientCallScreen> {
   void dispose() {
     // clear users
     _users.clear();
-    timer.cancel();
+    //timer.cancel();
     // destroy sdk
     callMethods.endPatientCall(
         call: widget.call);

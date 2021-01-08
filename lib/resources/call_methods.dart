@@ -55,15 +55,6 @@ class CallMethods {
     }
   }
 
-  Future<bool> endRelativeIncomingCall({Call call}) async {
-    try {
-      await callCollection.document(call.relativeId).delete();
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
   Future<bool> endCall({Call call,user}) async {
     try {
       await callCollection.document(call.doctorId).updateData({'users':user});

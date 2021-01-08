@@ -240,27 +240,6 @@ class _RelativeScreenState extends State<RelativeScreen>
                             ),
                           ),
                         ),
-                        // Padding(
-                        //                       padding: EdgeInsets.symmetric(vertical: 16.0),
-                        //                       child: Material(
-                        //                         color: Colors.white,
-                        //                         borderRadius: BorderRadius.circular(30.0),
-                        //                         elevation: 2.0,
-                        //                         child: MaterialButton(
-                        //                           onPressed: () {
-                        //                             Navigator.push(context,
-                        //                                 MaterialPageRoute(builder: (context) {
-                        //                               return JoinCall();
-                        //                             }));
-                        //                           },
-                        //                           minWidth: 200.0,
-                        //                           height: 42.0,
-                        //                           child: Text(
-                        //                             'Join a call',
-                        //                             style: TextStyle(color: Colors.black),
-                        //                           ),
-                        //                         ),
-                        //                       )),
                       ]),
                 ),
               ),

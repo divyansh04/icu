@@ -28,7 +28,6 @@ class _DoctorScreenState extends State<DoctorScreen> {
   List<User> userList = null;
   String query = "";
   Stream snapshot = null;
-  Call call;
   FirebaseUser currentUser;
   CallMethods callMethods = CallMethods();
   TextEditingController searchController = TextEditingController();
@@ -74,8 +73,8 @@ class _DoctorScreenState extends State<DoctorScreen> {
     }
   }
 
-  joinCall() async {
-    int users =  call.users.toInt() + 1;
+  joinCall(Call call) async {
+    int users = call.users.toInt() + 1;
     await callMethods.joinCall(call: call, user: users);
     Navigator.pop(context);
     await Permissions.cameraAndMicrophonePermissionsGranted()
@@ -86,29 +85,86 @@ class _DoctorScreenState extends State<DoctorScreen> {
             ))
         : {};
   }
-  makeCall(User searchedUser)async{
+
+  makeCall(User searchedUser) async {
     Navigator.pop(context);
     await CallUtils.dial(
-    from: sender,
-    to: searchedUser,
-    context: this.context,
+      from: sender,
+      to: searchedUser,
+      context: this.context,
     );
   }
 
-  Future<bool> isCallRunning(User searchedUser) async {
-    DocumentSnapshot snapshot = await Firestore.instance
+  runCall(User searchedUser) async {
+    DocumentSnapshot doctorSnapshot = await Firestore.instance
         .collection('call')
         .document(currentUser.uid)
         .get();
-    if (snapshot.data != null) {
-      call = Call.fromMap(snapshot.data);
+    DocumentSnapshot patientSnapshot = await Firestore.instance
+        .collection('call')
+        .document(searchedUser.uid)
+        .get();
+    if (doctorSnapshot.data != null) {
+       Call call = Call.fromMap(doctorSnapshot.data);
       if (call.patientId == searchedUser.uid) {
-        return true;
+        joinCall(call);
       } else {
-        return false;
+        if (patientSnapshot.data != null) {
+          Call call1 =  Call.fromMap(patientSnapshot.data);
+          await Firestore.instance
+              .collection('call')
+              .document(currentUser.uid)
+              .updateData({
+            'channel_id': call1.channelId,
+            'patient_id': call1.patientId,
+            'patient_name':call1.patientName,
+            'relative_id':call1.relativeId,
+            'relative_name':call1.relativeName
+          });
+          DocumentSnapshot doctorSnapshot = await Firestore.instance
+              .collection('call')
+              .document(currentUser.uid)
+              .get();
+          setState(() {
+            Call call3 = Call.fromMap(doctorSnapshot.data);
+            joinCall(call3);
+          });
+        } else {
+          makeCall(searchedUser);
+        }
       }
     } else {
-      return false;
+      if (patientSnapshot.data != null) {
+        Call call1 = Call.fromMap(patientSnapshot.data);
+        DocumentSnapshot relativeSnapshot = await Firestore.instance
+            .collection('call')
+            .document(call1.relativeId)
+            .get();
+        Call call2 = Call.fromMap(relativeSnapshot.data);
+        if (call2.hasDialled == true) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(
+              msg: '${searchedUser.name} is on another call');
+        } else {
+          Call call = Call(
+            doctorId: currentUser.uid,
+            doctorName: call1.doctorName,
+            patientId: call1.patientId,
+            patientName: call1.patientName,
+            relativeId: call1.relativeId,
+            relativeName: call1.relativeName,
+            users: 1,
+            channelId: call1.channelId,
+          );
+          call.hasDialled = true;
+          Map<String, dynamic> hasDialledMap = call.toMap(call);
+          await Firestore.instance.collection('call').document(call.doctorId).setData(hasDialledMap);
+          joinCall(call);
+
+        }
+      } else {
+        makeCall(searchedUser);
+      }
     }
   }
 
@@ -241,12 +297,9 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                 RaisedButton(
                                   elevation: 2.5,
                                   onPressed: () async {
-                                    bool running =await isCallRunning(searchedUser);
                                     await Permissions
                                             .cameraAndMicrophonePermissionsGranted()
-                                        ? {running?joinCall():
-                                        makeCall(searchedUser)
-                                          }
+                                        ? runCall(searchedUser)
                                         : {};
                                   },
                                   child: Text(
