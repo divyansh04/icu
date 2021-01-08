@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:icu/utils/universal_variables.dart';
 
 class StandardCustomButton extends StatelessWidget {
