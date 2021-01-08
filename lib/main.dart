@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/screens/PatientScreen.dart';
 import 'package:icu/screens/RelativeScreen.dart';
+import 'package:icu/screens/admin_panel/admin_panel.dart';
 import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -61,6 +62,7 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   bool doctor;
   bool patient;
+  bool relative;
   bool loading;
   Widget initialScreen;
   @override
@@ -76,11 +78,8 @@ class _HomeWidgetState extends State<HomeWidget> {
     FirebaseUser user = await AuthMethods().getCurrentUser();
     print(user.email);
     doctor = await AuthMethods().isDoctor(user.uid.toString());
-    print(doctor);
-    if (!doctor) {
       patient = await AuthMethods().isPatient(user.uid.toString());
-    }
-    print(patient);
+      relative = await AuthMethods().isRelative(user.uid.toString());
     setState(() {
       loading = false;
     });
@@ -88,7 +87,9 @@ class _HomeWidgetState extends State<HomeWidget> {
         ? initialScreen = HomeScreen()
         : patient
             ? initialScreen = PatientScreen()
-            : initialScreen = RelativeScreen();
+            : relative
+                ? initialScreen = RelativeScreen()
+                : initialScreen = AdminPanel();
   }
 
   @override
