@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/screens/PatientScreen.dart';
 import 'package:icu/screens/RelativeScreen.dart';
-import 'package:icu/screens/admin_panel/add_doctor.dart';
+import 'package:icu/screens/admin_panel/manage_elements.dart';
 import 'package:icu/screens/admin_panel/admin_panel.dart';
-import 'package:icu/screens/admin_panel/doctor_services.dart';
+import 'package:icu/screens/admin_panel/view_elements.dart';
 import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -14,7 +14,6 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/home_screen.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/screens/Doctorscreen.dart';
-
 
 void main() => runApp(MyApp());
 
@@ -40,7 +39,7 @@ class _MyAppState extends State<MyApp> {
         // },
         theme: ThemeData(brightness: Brightness.light),
 
-        home: AddDoctor(),
+        home: AdminPanel(),
         // FutureBuilder(
         //   future: _authMethods.getCurrentUser(),
         //   builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
@@ -60,6 +59,7 @@ class HomeWidget extends StatefulWidget {
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
+
 class _HomeWidgetState extends State<HomeWidget> {
   bool doctor;
   bool patient;
@@ -89,32 +89,31 @@ class _HomeWidgetState extends State<HomeWidget> {
     doctor
         ? initialScreen = HomeScreen()
         : patient
-        ? initialScreen = PatientScreen()
-        : initialScreen = RelativeScreen();
+            ? initialScreen = PatientScreen()
+            : initialScreen = RelativeScreen();
   }
 
   @override
   Widget build(BuildContext context) {
     return loading
         ? ModalProgressHUD(
-      inAsyncCall: loading,
-          progressIndicator: CustomisedProgressIndicator(),
-          child: Scaffold(
-            body: Container(
+            inAsyncCall: loading,
+            progressIndicator: CustomisedProgressIndicator(),
+            child: Scaffold(
+              body: Container(
                 decoration: BoxDecoration(
-            gradient: LinearGradient(
-            colors: [
-            UniversalVariables.gradientColorStart,
-              UniversalVariables.gradientColorEnd
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+                  gradient: LinearGradient(
+                    colors: [
+                      UniversalVariables.gradientColorStart,
+                      UniversalVariables.gradientColorEnd
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                ),
+              ),
             ),
-          ),
-            ),
-
-    ),
-        )
+          )
         : initialScreen;
   }
 }
