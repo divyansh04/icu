@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/constants/strings.dart';
 import 'package:icu/models/call.dart';
 import 'package:icu/models/log.dart';
@@ -6,7 +7,6 @@ import 'package:icu/resources/call_methods.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/call_screen.dart';
 import 'package:icu/utils/permissions.dart';
-import 'package:icu/utils/universal_variables.dart';
 
 class PickupScreen extends StatefulWidget {
   final Call call;
@@ -52,8 +52,7 @@ class _PickupScreenState extends State<PickupScreen> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              UniversalVariables.gradientColorStart,
-              UniversalVariables.gradientColorEnd,
+              kGradientColorStart, kGradientColorEnd,
             ],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
@@ -61,7 +60,7 @@ class _PickupScreenState extends State<PickupScreen> {
         ),
         child: Stack(children: [
           Container(
-            color: UniversalVariables.blackColor.withOpacity(0.5),
+            color: kBlackColor.withOpacity(0.5),
           ),
           Padding(
             padding: const EdgeInsets.all(28.0),
@@ -109,8 +108,8 @@ class _PickupScreenState extends State<PickupScreen> {
                             decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    UniversalVariables.gradientColorStart,
-                                    UniversalVariables.gradientColorEnd
+                                    kGradientColorStart,
+                                    kGradientColorEnd
                                   ],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,

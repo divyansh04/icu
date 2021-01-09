@@ -6,6 +6,7 @@ class User {
   String username;
   String userRole;
   String relativeName;
+  String relativeEmail;
   String relativeUid;
   String patientName;
   String patientUid;
@@ -16,6 +17,7 @@ class User {
     this.patientUid,
     this.relativeName,
     this.relativeUid,
+    this.relativeEmail,
     this.uid,
     this.name,
     this.email,
@@ -34,6 +36,7 @@ class User {
     data["userRole"] = user.userRole;
     data["imageUrl"] = user.imageUrl;
     data['relativeName'] = user.relativeName;
+    data['relativeEmail'] = user.relativeEmail;
     data['relativeUid'] = user.relativeUid;
     data['patientName'] = user.patientName;
     data['patientUid'] = user.patientUid;
@@ -50,6 +53,7 @@ class User {
     this.username = mapData['username'];
     this.userRole = mapData['userRole'];
     this.relativeName=mapData['relativeName'];
+    this.relativeEmail=mapData['relativeEmail'];
     this.relativeUid=mapData['relativeUid'];
     this.patientName=mapData['patientName'];
     this.patientUid=mapData['patientUid'];

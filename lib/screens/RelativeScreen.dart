@@ -9,10 +9,10 @@ import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:icu/utils/call_utilities_relative.dart';
 import 'package:icu/utils/permissions.dart';
-import 'package:icu/utils/universal_variables.dart';
 import 'package:provider/provider.dart';
 import 'login_screen.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:icu/constants/UIconstants.dart';
 
 class RelativeScreen extends StatefulWidget {
   @override
@@ -88,8 +88,8 @@ class _RelativeScreenState extends State<RelativeScreen>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                UniversalVariables.gradientColorStart,
-                UniversalVariables.gradientColorEnd,
+                kGradientColorStart,
+                kGradientColorEnd,
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -99,7 +99,7 @@ class _RelativeScreenState extends State<RelativeScreen>
             key: _formKey,
             child: Stack(children: [
               Container(
-                color: UniversalVariables.blackColor.withOpacity(0.5),
+                color: kBlackColor.withOpacity(0.5),
               ),
               Padding(
                 padding: const EdgeInsets.all(28.0),
@@ -217,8 +217,8 @@ class _RelativeScreenState extends State<RelativeScreen>
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
-                                        UniversalVariables.gradientColorStart,
-                                        UniversalVariables.gradientColorEnd
+                                        kGradientColorStart,
+                                        kGradientColorEnd
                                       ],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,

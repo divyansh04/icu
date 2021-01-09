@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 
 class CustomisedProgressIndicator extends StatefulWidget {
   @override
@@ -31,8 +31,8 @@ class _CustomisedProgressIndicatorState
       body: Center(
         child: CircularProgressIndicator(
           valueColor: animationController.drive(ColorTween(
-              begin: UniversalVariables.gradientColorStart,
-              end: UniversalVariables.gradientColorEnd)),
+              begin: kGradientColorStart,
+              end:   kGradientColorEnd)),
         ),
       ),
     );

@@ -9,7 +9,7 @@ import 'package:icu/screens/callscreens/call_screen.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/utils/call_utilities.dart';
 import 'package:icu/utils/permissions.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/widgets/CustomAppBar.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:icu/widgets/custom_tile.dart';
@@ -198,7 +198,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 query = val;
               });
             },
-            cursorColor: UniversalVariables.blackColor,
+            cursorColor: kBlackColor,
             autofocus: true,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -320,8 +320,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 });
           },
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(searchedUser.imageUrl.isEmpty
-                ? 'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4'
+            backgroundImage: NetworkImage(searchedUser.imageUrl==""? 'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4'
                 : searchedUser.imageUrl.toString()),
             backgroundColor: Colors.grey,
           ),
@@ -334,7 +333,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
           ),
           subtitle: Text(
             searchedUser.username.toString(),
-            style: TextStyle(color: UniversalVariables.greyColor),
+            style: TextStyle(color: kGreyColor),
           ),
         );
       }),
@@ -344,7 +343,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, //UniversalVariables.blackColor,
+      backgroundColor: Colors.white,
       appBar: searchAppBar(context),
       body: userList == null
           ? CustomisedProgressIndicator()

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:icu/models/user.dart';
 import 'package:icu/resources/auth_methods.dart';
+import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:icu/widgets/custom_tile.dart';
 import 'package:icu/widgets/standard_custom_button.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/widgets/CustomAppBar.dart';
 import 'package:icu/screens/admin_panel/manage_elements.dart';
 
@@ -35,18 +36,18 @@ class _ViewElementsState extends State<ViewElements> {
         userRole=='Doctors'?_authMethods.fetchDoctors(currentUser).then((List<User> list) {
           setState(() {
             userList = list;
+            loading = false;
             //userList.toList().sort((a, b) => a.name.compareTo(b.name));
           });
         }):_authMethods.fetchPatients(currentUser).then((List<User> list) {
           setState(() {
             userList = list;
+            loading = false;
             //userList.toList().sort((a, b) => a.name.compareTo(b.name));
           });
         });
       });
-      setState(() {
-        loading = false;
-      });
+
     } catch (e) {
       print(e);
       Fluttertoast.showToast(
@@ -60,6 +61,9 @@ class _ViewElementsState extends State<ViewElements> {
   }
   @override
   void initState() {
+    setState(() {
+      loading = true;
+    });
     getUsersList(widget.role);
     super.initState();
   }
@@ -93,7 +97,7 @@ class _ViewElementsState extends State<ViewElements> {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => ManageElements(
-                      role: 'Add ${widget.role}',
+                      role: widget.role,
                     )));
           },
           shape: BoxShape.circle,
@@ -104,14 +108,14 @@ class _ViewElementsState extends State<ViewElements> {
           ),
         ),
       ),
-      body: Padding(
+      body:loading?CustomisedProgressIndicator():Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         child: userList == null || userList.isEmpty
             ? Center(
                 child: Text(
                 'No ${widget.role} Added',
                 style: TextStyle(
-                    color: UniversalVariables.greyColor, fontSize: 30.0),
+                    color: kGreyColor, fontSize: 30.0),
               ))
             : ListView.builder(
                 shrinkWrap: true,
@@ -135,19 +139,19 @@ class _ViewElementsState extends State<ViewElements> {
                     ),
                     subtitle: Text(
                       '${userList[index].email}',
-                      style: TextStyle(color: UniversalVariables.greyColor),
+                      style: TextStyle(color: kGreyColor),
                     ),
                     trailing: IconButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => ManageElements(
-                                  role: 'Add ${widget.role}',
+                                  role: widget.role,user: userList[index],
                                 )));
                       },
                       icon: Icon(
                         Icons.edit,
                         size: 30,
-                        color: UniversalVariables.blackColor,
+                        color: kBlackColor,
                       ),
                     ),
                   );

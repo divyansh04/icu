@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:icu/utils/universal_variables.dart';
+
+import 'package:icu/constants/UIconstants.dart';
 
 class CustomTile extends StatelessWidget {
   final Widget leading;
@@ -43,7 +44,7 @@ class CustomTile extends StatelessWidget {
                     border: Border(
                         bottom: BorderSide(
                             width: 1,
-                            color: UniversalVariables.separatorColor))),
+                            color: kSeparatorColor))),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
