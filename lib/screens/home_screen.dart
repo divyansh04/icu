@@ -6,7 +6,7 @@ import 'package:icu/screens/Doctorscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 
 class  HomeScreen extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         SystemNavigator.pop();
       },
       child: Scaffold(
-          backgroundColor: UniversalVariables.blackColor,
+          backgroundColor: kBlackColor,
           body:DoctorScreen(),
         ),
     );
