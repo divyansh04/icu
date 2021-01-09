@@ -2,10 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/screens/PatientScreen.dart';
 import 'package:icu/screens/RelativeScreen.dart';
-import 'package:icu/screens/admin_panel/manage_elements.dart';
-import 'package:icu/screens/admin_panel/admin_panel.dart';
-import 'package:icu/screens/admin_panel/view_elements.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/screens/onboarding/onboarding.dart';
+import 'package:icu/utils/shared_pref_utility.dart';
+import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +25,9 @@ class _MyAppState extends State<MyApp> {
   final AuthMethods _authMethods = AuthMethods();
   @override
   Widget build(BuildContext context) {
+    bool isOnBoardingVisited =
+        SharedPreferencesUtility().checkIfOnBoardingVisited();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
@@ -33,23 +35,21 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: "icu",
         debugShowCheckedModeBanner: false,
-        // initialRoute: '/',
-        // routes: {
-        //   '/search_screen': (context) => DoctorScreen(),
-        // },
+        initialRoute: '/',
+        routes: {
+          '/search_screen': (context) => DoctorScreen(),
+        },
         theme: ThemeData(brightness: Brightness.light),
-
-        home: AdminPanel(),
-        // FutureBuilder(
-        //   future: _authMethods.getCurrentUser(),
-        //   builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-        //     if (snapshot.hasData) {
-        //       return HomeWidget();
-        //     } else {
-        //       return LoginScreen();
-        //     }
-        //   },
-        // ),
+        home: FutureBuilder(
+          future: _authMethods.getCurrentUser(),
+          builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+            if (snapshot.hasData) {
+              return HomeWidget();
+            } else {
+              return isOnBoardingVisited ? LoginScreen() : OnBoarding();
+            }
+          },
+        ),
       ),
     );
   }
@@ -103,10 +103,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               body: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      UniversalVariables.gradientColorStart,
-                      UniversalVariables.gradientColorEnd
-                    ],
+                    colors: [kGradientColorStart, kGradientColorEnd],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   ),

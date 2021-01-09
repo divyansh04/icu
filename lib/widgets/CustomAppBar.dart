@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Size preferredSize;
@@ -35,15 +35,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: !showGradient
             ? (appBarColor != null
             ? appBarColor
-            : UniversalVariables.blackColor)
+            : kBlackColor)
             : null,
         gradient: showGradient
             ? (gradient != null
             ? gradient
             : LinearGradient(
           colors: [
-            UniversalVariables.gradientColorStart,
-            UniversalVariables.gradientColorEnd
+            kGradientColorStart,
+            kGradientColorEnd
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,

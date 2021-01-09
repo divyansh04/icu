@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:icu/utils/universal_variables.dart';
 import 'package:icu/constants/UIconstants.dart';
 
 import 'package:icu/widgets/CustomAppBar.dart';
@@ -233,7 +232,7 @@ class _ManageElementsState extends State<ManageElements> {
                         margin: EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           color: selectedGender == Gender.MALE
-                              ? UniversalVariables.gradientColorStart
+                              ? kGradientColorStart
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -262,7 +261,7 @@ class _ManageElementsState extends State<ManageElements> {
                         margin: EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           color: selectedGender == Gender.FEMALE
-                              ? UniversalVariables.gradientColorStart
+                              ? kGradientColorStart
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0),
                         ),

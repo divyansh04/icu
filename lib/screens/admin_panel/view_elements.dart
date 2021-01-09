@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:icu/widgets/custom_tile.dart';
 import 'package:intl/intl.dart';
 import 'package:icu/widgets/standard_custom_button.dart';
-
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/widgets/CustomAppBar.dart';
 
 import 'package:icu/screens/admin_panel/manage_elements.dart';
@@ -66,7 +65,7 @@ class _ViewElementsState extends State<ViewElements> {
                 child: Text(
                 'No ${widget.role} Added',
                 style: TextStyle(
-                    color: UniversalVariables.greyColor, fontSize: 30.0),
+                    color: kGreyColor, fontSize: 30.0),
               ))
             : ListView.builder(
                 shrinkWrap: true,
@@ -90,7 +89,7 @@ class _ViewElementsState extends State<ViewElements> {
                     ),
                     subtitle: Text(
                       'email',
-                      style: TextStyle(color: UniversalVariables.greyColor),
+                      style: TextStyle(color: kGreyColor),
                     ),
                     trailing: IconButton(
                       onPressed: () {
@@ -102,7 +101,7 @@ class _ViewElementsState extends State<ViewElements> {
                       icon: Icon(
                         Icons.edit,
                         size: 30,
-                        color: UniversalVariables.blackColor,
+                        color: kBlackColor,
                       ),
                     ),
                   );

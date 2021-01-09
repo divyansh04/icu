@@ -6,7 +6,7 @@ import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/login_screen.dart';
 import 'package:icu/utils/call_utilities.dart';
 import 'package:icu/utils/permissions.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/widgets/CustomAppBar.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:icu/widgets/custom_tile.dart';
@@ -92,7 +92,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 query = val;
               });
             },
-            cursorColor: UniversalVariables.blackColor,
+            cursorColor: kBlackColor,
             autofocus: true,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -234,7 +234,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
           ),
           subtitle: Text(
             searchedUser.username.toString(),
-            style: TextStyle(color: UniversalVariables.greyColor),
+            style: TextStyle(color: kGreyColor),
           ),
         );
       }),
@@ -244,7 +244,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, //UniversalVariables.blackColor,
+      backgroundColor: Colors.white,
       appBar: searchAppBar(context),
       body: userList==null?CustomisedProgressIndicator():Container(
         padding: EdgeInsets.symmetric(horizontal: 20),

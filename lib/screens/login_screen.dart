@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:icu/constants/UIconstants.dart';
 import 'package:icu/resources/auth_methods.dart';
 import 'package:icu/screens/tabBarWidgets/forgotPassword.dart';
-import 'package:icu/utils/universal_variables.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -64,8 +63,8 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    UniversalVariables.gradientColorStart,
-                    UniversalVariables.gradientColorEnd
+                    kGradientColorStart,
+                    kGradientColorEnd
                   ],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
@@ -74,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Stack(
                 children: [
                   Container(
-                    color: UniversalVariables.blackColor.withOpacity(0.5),
+                    color: kBlackColor.withOpacity(0.5),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -111,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Material(
                               borderRadius: BorderRadius.circular(10.0),
                               elevation: 0.0,
-                              color: UniversalVariables.blackColor,
+                              color: kBlackColor,
                               child: TextFormField(
                                 cursorColor: Colors.white,
                                 controller: email,
@@ -141,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Material(
                               borderRadius: BorderRadius.circular(10.0),
                               elevation: 0.0,
-                              color: UniversalVariables.blackColor,
+                              color: kBlackColor,
                               child: TextFormField(
                                 cursorColor: Colors.white,
                                 controller: password,
@@ -204,13 +203,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16.0),
-                                child: StandardCustomButton(
-                                  onTap: () async {
-                                    if (_formKey.currentState.validate()) {
-                                      performLogin();
-                                    }
-                                  },
-                                  label: "Sign in",
+                                child: Container(
+                                  height:50.0,
+                                  child: StandardCustomButton(
+                                    onTap: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        performLogin();
+                                      }
+                                    },
+                                    label: "Sign in",
+                                  ),
                                 )
 
                                 ),

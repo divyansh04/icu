@@ -5,7 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:icu/provider/user_provider.dart';
 import 'package:icu/resources/local_db/repository/log_repository.dart';
 import 'package:icu/screens/callscreens/pickup/pickup_layout_patient.dart';
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'login_screen.dart';
@@ -54,8 +54,8 @@ class _PatientScreenState extends State<PatientScreen>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                UniversalVariables.gradientColorStart,
-                UniversalVariables.gradientColorEnd,
+                kGradientColorStart,
+                kGradientColorEnd,
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -63,7 +63,7 @@ class _PatientScreenState extends State<PatientScreen>
           ),
           child: Stack(children: [
             Container(
-              color: UniversalVariables.blackColor.withOpacity(0.5),
+              color: kBlackColor.withOpacity(0.5),
             ),
             Center(
               child: Text(

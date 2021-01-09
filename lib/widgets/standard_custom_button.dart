@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:icu/utils/universal_variables.dart';
+import 'package:icu/constants/UIconstants.dart';
 
 class StandardCustomButton extends StatelessWidget {
   final Function onTap;
@@ -23,8 +22,8 @@ class StandardCustomButton extends StatelessWidget {
             shape: shape ?? BoxShape.rectangle,
             gradient: LinearGradient(
               colors: [
-                UniversalVariables.gradientColorStart,
-                UniversalVariables.gradientColorEnd
+                kGradientColorStart,
+                kGradientColorEnd
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
