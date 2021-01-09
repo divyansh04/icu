@@ -10,6 +10,8 @@ import 'package:icu/utils/universal_variables.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:icu/widgets/Customised_Progress_Indicator.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:icu/widgets/standard_custom_button.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -38,12 +40,14 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
     messaging.getToken().then((value) => {
-      setState((){
-       fcmToken=value.toString();
-    }),
-      print(value)});
+          setState(() {
+            fcmToken = value.toString();
+          }),
+          print(value)
+        });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -53,226 +57,173 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: ModalProgressHUD(
           progressIndicator: CustomisedProgressIndicator(),
-          inAsyncCall:isLoginPressed,
-              child: Scaffold(
-                  backgroundColor: Colors.white,
-                  body: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          UniversalVariables.gradientColorStart,
-                          UniversalVariables.gradientColorEnd
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          color: UniversalVariables.blackColor.withOpacity(0.5),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                          child: Form(
-                            key: _formKey,
-                            child: Center(
-                              child: ListView(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                children: <Widget>[
-                                  SvgPicture.asset(
-                                    'assets/images/icu-logo.svg',
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                  ),
-                                  SizedBox(
-                                    height: 20.0,
-                                  ),
+          inAsyncCall: isLoginPressed,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    UniversalVariables.gradientColorStart,
+                    UniversalVariables.gradientColorEnd
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
+              child: Stack(
+                children: [
+                  Container(
+                    color: UniversalVariables.blackColor.withOpacity(0.5),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Center(
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            SvgPicture.asset(
+                              'assets/images/icu-logo.svg',
+                              width: MediaQuery.of(context).size.width * 0.5,
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
 
-                                  SvgPicture.asset(
-                                    'assets/images/i-cu-text.svg',
-                                    // width: MediaQuery.of(context).size.width * 0.5,
-                                  ),
-                                  // Text(
-                                  //   'Sign In',
-                                  //   style: TextStyle(
-                                  //       color: Colors.white,
-                                  //       fontSize: 60,
-                                  //       fontWeight: FontWeight.w700),
-                                  //   textAlign: TextAlign.center,
-                                  // ),
-                                  SizedBox(
-                                    height: 45.0,
-                                  ),
-                                  Material(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    elevation: 0.0,
-                                    color: UniversalVariables.blackColor,
-                                    child: TextFormField(
-                                      cursorColor: Colors.white,
-                                      controller: email,
-                                      textAlign: TextAlign.center,
-                                      keyboardType: TextInputType.emailAddress,
-                                      // ignore: missing_return
-                                      validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return "please enter a value";
-                                        }
-                                      },
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      decoration: kTextFieldDecoration.copyWith(
-                                          hintText: 'Enter your email',
-                                          prefixIcon: Icon(
-                                            Icons.alternate_email,
-                                            color: Colors.white,
-                                            size: 15.0,
-                                          )),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  Material(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    elevation: 0.0,
-                                    color: UniversalVariables.blackColor,
-                                    child: TextFormField(
-                                      cursorColor: Colors.white,
-                                      controller: password,
-                                      textAlign: TextAlign.center,
-                                      obscureText: hide,
-                                      // ignore: missing_return
-                                      validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return "The password field cannot be empty";
-                                        }
-                                      },
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      decoration: kTextFieldDecoration.copyWith(
-                                        hintText: 'Enter your password',
-                                        prefixIcon: Icon(
-                                          Icons.lock_outline,
-                                          color: Colors.white,
-                                          size: 15.0,
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            !hide
-                                                ? Icons.remove_red_eye_outlined
-                                                : Icons.remove_red_eye,
-                                            color: Colors.white,
-                                            size: 15.0,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              hide = !hide;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 15, right: 8, bottom: 8),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                          return ForgotPassword();
-                                        }));
-                                      },
-                                      child: Text(
-                                        'Forgot Password?',
-                                        textAlign: TextAlign.right,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 18.0,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                                    child: Container(
-                                      height: 50.0,
-                                      child: RaisedButton(
-                                        elevation: 2.0,
-                                        onPressed: () async {
-                                          if (_formKey.currentState.validate()) {
-                                            performLogin();
-                                          }
-                                        },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(80.0)),
-                                        padding: EdgeInsets.all(0.0),
-                                        child: Ink(
-                                          decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  UniversalVariables
-                                                      .gradientColorStart,
-                                                  UniversalVariables
-                                                      .gradientColorEnd
-                                                ],
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0)),
-                                          child: Container(
-                                            constraints:
-                                                BoxConstraints(minHeight: 50.0),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "Sign in",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    // Material(
-                                    //   color: Colors.white,
-                                    //   borderRadius: BorderRadius.circular(30.0),
-                                    //   elevation: 2.0,
-                                    //   child: MaterialButton(
-                                    //     onPressed: () async {
-                                    //       if (_formKey.currentState.validate()) {
-                                    //         performLogin();
-                                    //       }
-                                    //     },
-                                    //     minWidth: 200.0,
-                                    //     height: 42.0,
-                                    //     child: Text(
-                                    //       'Sign In',
-                                    //       style: TextStyle(color: Colors.black),
-                                    //     ),
-                                    //   ),
-                                    // )
-                                  ),
-                                ],
+                            SvgPicture.asset(
+                              'assets/images/i-cu-text.svg',
+                              // width: MediaQuery.of(context).size.width * 0.5,
+                            ),
+                            // Text(
+                            //   'Sign In',
+                            //   style: TextStyle(
+                            //       color: Colors.white,
+                            //       fontSize: 60,
+                            //       fontWeight: FontWeight.w700),
+                            //   textAlign: TextAlign.center,
+                            // ),
+                            SizedBox(
+                              height: 45.0,
+                            ),
+                            Material(
+                              borderRadius: BorderRadius.circular(10.0),
+                              elevation: 0.0,
+                              color: UniversalVariables.blackColor,
+                              child: TextFormField(
+                                cursorColor: Colors.white,
+                                controller: email,
+                                textAlign: TextAlign.center,
+                                keyboardType: TextInputType.emailAddress,
+                                // ignore: missing_return
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return "please enter a value";
+                                  }
+                                },
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                decoration: kTextFieldDecoration.copyWith(
+                                    hintText: 'Enter your email',
+                                    prefixIcon: Icon(
+                                      Icons.alternate_email,
+                                      color: Colors.white,
+                                      size: 15.0,
+                                    )),
                               ),
                             ),
-                          ),
+                            SizedBox(
+                              height: 8.0,
+                            ),
+                            Material(
+                              borderRadius: BorderRadius.circular(10.0),
+                              elevation: 0.0,
+                              color: UniversalVariables.blackColor,
+                              child: TextFormField(
+                                cursorColor: Colors.white,
+                                controller: password,
+                                textAlign: TextAlign.center,
+                                obscureText: hide,
+                                // ignore: missing_return
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return "The password field cannot be empty";
+                                  }
+                                },
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                decoration: kTextFieldDecoration.copyWith(
+                                  hintText: 'Enter your password',
+                                  prefixIcon: Icon(
+                                    Icons.lock_outline,
+                                    color: Colors.white,
+                                    size: 15.0,
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      !hide
+                                          ? Icons.remove_red_eye_outlined
+                                          : Icons.remove_red_eye,
+                                      color: Colors.white,
+                                      size: 15.0,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        hide = !hide;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 15, right: 8, bottom: 8),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ForgotPassword();
+                                  }));
+                                },
+                                child: Text(
+                                  'Forgot Password?',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 18.0,
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16.0),
+                                child: StandardCustomButton(
+                                  onTap: () async {
+                                    if (_formKey.currentState.validate()) {
+                                      performLogin();
+                                    }
+                                  },
+                                  label: "Sign in",
+                                )
+
+                                ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-            ));
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 
   void performLogin() async {
@@ -297,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       if (isNewUser) {
-        _authMethods.addDataToDb(user,fcmToken).then((value) {
+        _authMethods.addDataToDb(user, fcmToken).then((value) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return HomeWidget();

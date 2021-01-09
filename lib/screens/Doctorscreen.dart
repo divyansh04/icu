@@ -105,21 +105,21 @@ class _DoctorScreenState extends State<DoctorScreen> {
         .document(searchedUser.uid)
         .get();
     if (doctorSnapshot.data != null) {
-       Call call = Call.fromMap(doctorSnapshot.data);
+      Call call = Call.fromMap(doctorSnapshot.data);
       if (call.patientId == searchedUser.uid) {
         joinCall(call);
       } else {
         if (patientSnapshot.data != null) {
-          Call call1 =  Call.fromMap(patientSnapshot.data);
+          Call call1 = Call.fromMap(patientSnapshot.data);
           await Firestore.instance
               .collection('call')
               .document(currentUser.uid)
               .updateData({
             'channel_id': call1.channelId,
             'patient_id': call1.patientId,
-            'patient_name':call1.patientName,
-            'relative_id':call1.relativeId,
-            'relative_name':call1.relativeName
+            'patient_name': call1.patientName,
+            'relative_id': call1.relativeId,
+            'relative_name': call1.relativeName
           });
           DocumentSnapshot doctorSnapshot = await Firestore.instance
               .collection('call')
@@ -158,9 +158,11 @@ class _DoctorScreenState extends State<DoctorScreen> {
           );
           call.hasDialled = true;
           Map<String, dynamic> hasDialledMap = call.toMap(call);
-          await Firestore.instance.collection('call').document(call.doctorId).setData(hasDialledMap);
+          await Firestore.instance
+              .collection('call')
+              .document(call.doctorId)
+              .setData(hasDialledMap);
           joinCall(call);
-
         }
       } else {
         makeCall(searchedUser);
@@ -318,8 +320,9 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 });
           },
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4'),
+            backgroundImage: NetworkImage(searchedUser.imageUrl.isEmpty
+                ? 'https://firebasestorage.googleapis.com/v0/b/icu-call.appspot.com/o/profile.jpg?alt=media&token=0c06cf85-d3c6-4575-a464-f214faa8b9c4'
+                : searchedUser.imageUrl.toString()),
             backgroundColor: Colors.grey,
           ),
           title: Text(

@@ -2,6 +2,7 @@ class User {
   String uid;
   String name;
   String email;
+  String imageUrl;
   String username;
   String userRole;
   String relativeName;
@@ -19,6 +20,7 @@ class User {
     this.name,
     this.email,
     this.username,
+    this.imageUrl,
     this.userRole,
     this.fcmToken
   });
@@ -30,6 +32,7 @@ class User {
     data['email'] = user.email;
     data['username'] = user.username;
     data["userRole"] = user.userRole;
+    data["imageUrl"] = user.imageUrl;
     data['relativeName'] = user.relativeName;
     data['relativeUid'] = user.relativeUid;
     data['patientName'] = user.patientName;
@@ -43,6 +46,7 @@ class User {
     this.uid = mapData['uid'];
     this.name = mapData['name'];
     this.email = mapData['email'];
+    this.imageUrl=mapData['imageUrl'];
     this.username = mapData['username'];
     this.userRole = mapData['userRole'];
     this.relativeName=mapData['relativeName'];

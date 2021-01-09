@@ -13,12 +13,14 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    throw new GradleException("versionName not found. Define flutter.versionName in the local.properties file.")
+    // flutterVersionCode = '1'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    throw new GradleException("versionName not found. Define flutter.versionName in the local.properties file.")
+    // flutterVersionName = '1.0'
 }
 
 apply plugin: 'com.android.application'
@@ -69,4 +71,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
 }
-apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services' 

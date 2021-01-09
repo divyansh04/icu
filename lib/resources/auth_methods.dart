@@ -153,6 +153,21 @@ class AuthMethods {
     return userList;
   }
 
+  Future<List<User>> fetchDoctors(FirebaseUser currentUser) async {
+    List<User> userList = List<User>();
+
+    QuerySnapshot querySnapshot = await firestore
+        .collection(USERS_COLLECTION)
+        .where('userRole', isEqualTo: 'doctor')
+        .getDocuments();
+    for (var i = 0; i < querySnapshot.documents.length; i++) {
+      if (querySnapshot.documents[i].documentID != currentUser.uid) {
+        userList.add(User.fromMap(querySnapshot.documents[i].data));
+      }
+    }
+    return userList;
+  }
+
   Future<List<User>> fetchPatients(FirebaseUser currentUser) async {
     List<User> userList = List<User>();
 
