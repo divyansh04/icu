@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/constants/UIconstants.dart';
@@ -23,6 +22,7 @@ enum Gender {
 }
 
 class _ManageElementsState extends State<ManageElements> {
+  final AuthMethods _authMethods = AuthMethods();
   var _formKey = GlobalKey<FormState>();
   bool hasData;
   Gender selectedGender;
@@ -30,8 +30,8 @@ class _ManageElementsState extends State<ManageElements> {
   String email;
   String relativeEmail;
   String relativeName;
-  String password='123456';
-  AuthMethods authMethods=AuthMethods();
+  String password = '123456';
+  AuthMethods authMethods = AuthMethods();
   checkUserData() {
     if (widget.user != null) {
       setState(() {
@@ -263,7 +263,9 @@ class _ManageElementsState extends State<ManageElements> {
                 //  perform add doctor logic
                 print(email);
                 print(name);
-                if(!hasData){addDoctor();}
+                if (!hasData) {
+                  addDoctor(name,'doctor','Doctor Doom','doom@latvaria.rule','6969696969');
+                }
               }
             },
             label: 'Save',
@@ -273,6 +275,13 @@ class _ManageElementsState extends State<ManageElements> {
     );
   }
 
+  void addDoctor(String username, String userRole, String displayName,
+      String email, String uId) {
+    _authMethods.addDataFromAdminToDb(
+        username, userRole, displayName, email, uId);
+  }
+
+  ///show patient's form
   Widget patient() {
     return Scaffold(
       appBar: CustomAppBar(
@@ -559,5 +568,4 @@ class _ManageElementsState extends State<ManageElements> {
       ),
     );
   }
-
 }

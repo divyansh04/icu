@@ -102,11 +102,12 @@ class AuthMethods {
     print(currentUser['userRole']);
     return currentUser['userRole'] == 'doctor' ? true : false;
   }
+
   Future<bool> isAdmin(String id) async {
     DocumentSnapshot currentUser =
-    await _fireStore.collection('users').document(id).get();
+        await _fireStore.collection('users').document(id).get();
     print(currentUser['userRole']);
-    return currentUser['userRole'] == 'Admin' ? true : false;
+    return currentUser['userRole'] == 'admin' ? true : false;
   }
 
   Future<bool> isPatient(String id) async {
@@ -116,7 +117,7 @@ class AuthMethods {
     return currentUser['userRole'] == 'patient' ? true : false;
   }
 
-  Future<void> addDataToDb(FirebaseUser currentUser,String fcmToken) async {
+  Future<void> addDataToDb(FirebaseUser currentUser, String fcmToken) async {
     String username = Utils.getUsername(currentUser.email);
     User user = User(
       uid: currentUser.uid,
@@ -128,10 +129,22 @@ class AuthMethods {
     );
 
     firestore
-    
         .collection(USERS_COLLECTION)
         .document(currentUser.uid)
         .setData(user.toMap(user));
+  }
+
+  Future<void> addDataFromAdminToDb(String username, String userRole,
+      String displayName, String email, String uId) async {
+    User user = User(
+      uid: uId,
+      email: email,
+      name: displayName,
+      username: username,
+      userRole: userRole,
+    );
+
+    firestore.collection(USERS_COLLECTION).add(user.toMap(user));
   }
 
   getCurrentUserDetails(String id) async {
@@ -192,7 +205,6 @@ class AuthMethods {
       return false;
     }
   }
-
 
   Stream<DocumentSnapshot> getUserStream({@required String uid}) =>
       _userCollection.document(uid).snapshots();
