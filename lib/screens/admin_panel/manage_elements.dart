@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icu/constants/UIconstants.dart';
@@ -30,8 +29,8 @@ class _ManageElementsState extends State<ManageElements> {
   String email;
   String relativeEmail;
   String relativeName;
-  String password='123456';
-  AuthMethods authMethods=AuthMethods();
+  String password = '123456';
+  AuthMethods authMethods = AuthMethods();
   checkUserData() {
     if (widget.user != null) {
       setState(() {
@@ -48,6 +47,23 @@ class _ManageElementsState extends State<ManageElements> {
   @override
   void initState() {
     checkUserData();
+    if (hasData) {
+      switch (widget.user.gender) {
+        case 'male':
+          {
+            setState(() {
+              selectedGender = Gender.MALE;
+            });
+          }
+          break;
+        case 'female':
+          {
+            setState(() {
+              selectedGender = Gender.FEMALE;
+            });
+          }
+      }
+    }
     super.initState();
   }
 
@@ -95,7 +111,7 @@ class _ManageElementsState extends State<ManageElements> {
                       radius: 48.5,
                       backgroundColor: Colors.white,
                       backgroundImage: hasData
-                          ? NetworkImage(widget.user.imageUrl.toString())
+                          ? widget.user.imageUrl==""?AssetImage('assets/profile.jpg'): NetworkImage(widget.user.imageUrl.toString())
                           : AssetImage('assets/profile.jpg'),
                     ),
                   ),
@@ -147,6 +163,7 @@ class _ManageElementsState extends State<ManageElements> {
               TextFormField(
                 initialValue: hasData ? widget.user.email : '',
                 cursorColor: Colors.white,
+                enabled: !hasData,
                 onChanged: (value) {
                   setState(() {
                     email = value;
@@ -165,11 +182,13 @@ class _ManageElementsState extends State<ManageElements> {
                 ),
                 decoration: kFormTextFieldDecoration.copyWith(
                     labelText: 'Doctor\'s Email',
-                    suffixIcon: Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                      size: 15.0,
-                    ),
+                    suffixIcon: hasData
+                        ? null
+                        : Icon(
+                            Icons.edit,
+                            color: Colors.black,
+                            size: 15.0,
+                          ),
                     hintText: 'Enter your email',
                     prefixIcon: Icon(
                       Icons.alternate_email,
@@ -263,7 +282,7 @@ class _ManageElementsState extends State<ManageElements> {
                 //  perform add doctor logic
                 print(email);
                 print(name);
-                if(!hasData){addDoctor();}
+                if (!hasData) {}
               }
             },
             label: 'Save',
@@ -312,7 +331,7 @@ class _ManageElementsState extends State<ManageElements> {
                       radius: 48.5,
                       backgroundColor: Colors.white,
                       backgroundImage: hasData
-                          ? NetworkImage(widget.user.imageUrl.toString())
+                          ? widget.user.imageUrl==""?AssetImage('assets/profile.jpg'): NetworkImage(widget.user.imageUrl.toString())
                           : AssetImage('assets/profile.jpg'),
                     ),
                   ),
@@ -559,5 +578,4 @@ class _ManageElementsState extends State<ManageElements> {
       ),
     );
   }
-
 }
